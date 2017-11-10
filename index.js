@@ -7,7 +7,7 @@ var server = http.createServer(
         res.writeHead(200, {'Content-Type': 'text/plain'});
         
         //HTML content
-        res.end('Hello World');
+        res.end('Hello World directly from Github!');
     }
 );
  
