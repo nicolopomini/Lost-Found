@@ -1,0 +1,22 @@
+Home folder:
+- views: pagine web "html"
+- public: librerie, js client e css
+- routes: file js server che gestiscono le richieste
+
+Pagine frontend:
+- 404
+- Database error
+- index (cerca e segnala)
+- login/signup
+- pagina di ricerca (anche inclusa in index)
+
+Pagine backend:
+- mappatura db (issue, tag, user)
+- login (verifica l'utente)
+- signup
+- issuehandler (add e search)
+
+Compiti: 
+- Ivan frontend
+- Nicolò & Clem: mappatura db e issuehandler
+- Dalla: gestione utente
