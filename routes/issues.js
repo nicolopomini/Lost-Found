@@ -1,45 +1,44 @@
-var express = require("express");
-var mongoose = require("mongoose");
+var express = require('express');
+var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
-var app = express();
 var router = express.Router();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+//db-like schema constructors
+var Tag = require('../models/tag.js');
+var User = require('../models/user.js');
+var Issue = require('../models/issue.js');
 
-//DB instances
-var tag = require("../models/tag");
-var user = require("../models/user");
-var issue = require("../models/issue");
+router.get('/', function(req, res){
+  /*
+  //DEBUG
+  var query = req.query;
+  res.send(query);
+  */
 
-mongoose.Promise = global.Promise;
-var options = {
-    useMongoClient: true,
-    user: 'se2',
-    pass: 'qwerty'
-  };
-mongoose.connect('mongodb://se2:qwerty@ds115625.mlab.com:57185/lostfound', options);
-const db = mongoose.connection;
-//gli errori dovrebbe gestirli da soli con la funzione in app.js
+  /*
+  //DEBUG
+  var issue = new Issue();
+  issue.save();
+  */
 
-router.get('/:query', function(req, res) {
-	var query = req.params.query;
-	//inviare la query a IBM Watson
-	//leggere il JSON resituito
-	//ricercare le issues corrispondenti
-	res.send("Hai cercato: " + query);
+  /*
+  //DEBUG DB
+  Issue.find({}, function(err, issues) {
+    if(err) handleError(err);
+    else res.send(issues);
+
+    console.log('OK');
+  });
+  */
 });
-router.post('/', function(req, res) {
-	var room = req.query.room;
-	var description = req.query.description;
-	var author = req.query.author;
-	if(room && description && author) {
-		res.send(room + " " + description + " " + author);
-	}
-	else {
-		res.send("Missing parameters");
-	}
+
+router.post('/', function(req, res){
+  /*
+  //DEBUG
+  var body = req.body;
+  res.send(body);
+  */
 });
 
 module.exports = router;
