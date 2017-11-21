@@ -11,18 +11,21 @@ var IssueSchema = new Schema({
   photo: {type: String, default: null}
 });
 
+//validating issue parameters
+IssueSchema.methods.validAttr = function() {
+  console.log('Valid parameters');
+  return true;
+}
+
 //adding tag elaboration API
 //using .methods given by schema
 IssueSchema.methods.generateTags = function() {
-  if(this.description.length > 0){
-
-  }
+  if(this.description.length > 0){}
+  console.log('Generating tags');
 }
 
 //searchning for related issues by comparing tags
-IssueSchema.methods.searchRelatedIssues = function() {
-  
-}
+IssueSchema.methods.searchRelatedIssues = function() {}
 
 //exporting Issue object
 module.exports = mongoose.model('Issue', IssueSchema);

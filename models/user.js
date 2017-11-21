@@ -8,4 +8,7 @@ var UserSchema = new Schema({
 	password: {type: String}
 });
 
+//returns if the user is authenticated or not
+UserSchema.methods.isAuth = function() {}
+
 module.exports = mongoose.model('User', UserSchema);

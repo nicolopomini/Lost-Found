@@ -9,36 +9,80 @@ var Tag = require('../models/tag.js');
 var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
-router.get('/', function(req, res){
-  /*
+//SEARCHING FOR AN ITEM (USING DESCRIPTION)
+//search for matching issue by tag comparison
+router.get('/', function(req, res) {
   //DEBUG
-  var query = req.query;
-  res.send(query);
-  */
+  console.log('Search by DESCRIPTION');
 
-  /*
+  //new issue from get parameters
+  var issue = new Issue(req.query);
+  //TODO issue type = 'search'
+  console.log('New issue:');
+  console.log(issue);
+
   //DEBUG
-  var issue = new Issue();
-  issue.save();
-  */
+  res.send('OK');
+});
 
-  /*
-  //DEBUG DB
-  Issue.find({}, function(err, issues) {
+//SEARCHING FOR AN ITEM (USING ID)
+router.get('/:id', function(req, res) {
+  var id = req.params.id;
+
+  //DEBUG
+  console.log('Search by ID (= ' + id + ')');
+
+  //searching for a specific item
+  Issue.find({_id: id}, function(err, res) {
+    //handling db errors
     if(err) handleError(err);
-    else res.send(issues);
-
-    console.log('OK');
+    //works!
+    console.console.log('Found:');
+    console.log(res);
   });
-  */
 });
 
-router.post('/', function(req, res){
-  /*
+//FOUND ITEM
+//new issue from post parameters
+router.post('/', function(req, res) {
   //DEBUG
-  var body = req.body;
-  res.send(body);
-  */
+  console.log('Inserting FOUND');
+
+  //creating an Issue istance from POST parameters
+  var issue = new Issue(req.body);
+  //TODO issue type = 'found'
+  console.log('New issue:');
+  console.log(issue);
+
+  handleIssue(issue);
 });
+
+//handling issue search
+function handleIssue(issue) {
+  //issue attributes are not valid => no response
+  if(!issue.validAttr()) return;
+
+  //generating tags inside the issue class
+  issue.generateTags();
+
+  //saving the issue into the db
+  issue.save(function(err) {
+    //handling db errors
+    if (err) return handleError(err);
+    //saved!
+    console.log('Saved:');
+    console.log(issue);
+  }).then(function(){ //then() is used to assure that the new issue has been inserted
+    //searching for matching TagSchema
+    //search for issues with matching tags
+    Issue.find({}, function(err, res) {
+      //handling db errors
+      if(err) handleError(err);
+      //works!
+      console.log('Searching:');
+      console.log(res);
+    });
+  });
+}
 
 module.exports = router;
