@@ -37,9 +37,12 @@ router.get('/:id', function(req, res) {
     //handling db errors
     if(err) handleError(err);
     //works!
-    console.console.log('Found:');
+    console.log('Found:');
     console.log(res);
+    res.send(res);
   });
+
+
 });
 
 //FOUND ITEM
