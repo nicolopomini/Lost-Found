@@ -30,8 +30,11 @@ router.get('/:id', function(req, res) {
   var id = req.params.id;
 
   //DEBUG
-  console.log('Search by ID (= ' + id + ')');
+  var debug = 'Search by ID (= ' + id + ')';
+  console.log(debug);
+  res.send(debug);
 
+  /*
   //searching for a specific item
   Issue.find({}, function(err, issues) {
     //handling db errors
@@ -41,6 +44,7 @@ router.get('/:id', function(req, res) {
     console.log(issues);
     res.send(issues);
   });
+  */
 
 });
 
