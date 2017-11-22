@@ -4,28 +4,26 @@ var User = require('./user');
 
 var IssueSchema = new Schema({
   //document property: SchemaType
-  time: {type: Date, default: null},
-  room: {type: String, default: ''},
-  description: {type: String, default: ''},
-  author: {type: mongoose.Schema.Types.ObjectId,  ref: 'User'},
-  photo: {type: String, default: null}
+  time: {type: Date, default: null}, //when did I find it?
+  inserted: {type: Date, default: Date.now()}, //when di I inserted this issue?
+  room: {type: String, default: ''}, //where did i found it?
+  description: {type: String, default: ''}, //what
+  author: {type: mongoose.Schema.Types.ObjectId,  ref: 'User'}, //who
+  photo: {type: String, default: null},
+  tags: [{
+    original: String, //original string retrieved from IBM Watson
+    parsed: String, //original, but lower-case without spaces
+    relevance: Number //relevance is a double between 0 and 1
+  }],
+  type: String //searching or found?
 });
 
 //validating issue parameters
-IssueSchema.methods.validAttr = function() {
-  console.log('Valid parameters');
-  return true;
-}
+IssueSchema.methods.checkInput = function() {}
 
 //adding tag elaboration API
 //using .methods given by schema
-IssueSchema.methods.generateTags = function() {
-  if(this.description.length > 0){}
-  console.log('Generating tags');
-}
-
-//searchning for related issues by comparing tags
-IssueSchema.methods.searchRelatedIssues = function() {}
+IssueSchema.methods.generateTags = function() {}
 
 //exporting Issue object
 module.exports = mongoose.model('Issue', IssueSchema);
