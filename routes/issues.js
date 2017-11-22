@@ -33,7 +33,7 @@ router.get('/:id', function(req, res) {
   console.log('Search by ID (= ' + id + ')');
 
   //searching for a specific item
-  Issue.find({_id: id}, function(err, res) {
+  Issue.find({}, function(err, res) {
     //handling db errors
     if(err) handleError(err);
     //works!
