@@ -37,7 +37,7 @@ router.get('/:id', function(req, res) {
   */
 
   //searching for a specific item
-  Issue.find({_id: id}, function(err, issues) {
+  Issue.find({}, function(err, issues) {
     //handling db errors
     if(err) handleError(err);
     //works!
