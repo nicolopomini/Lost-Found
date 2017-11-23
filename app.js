@@ -12,10 +12,13 @@ var app = express();
 
 //instancing db connection
 mongoose.Promise = global.Promise;
+/*
 //defining db
 var db_user = 'se2';
 var db_password = 'qwerty';
 var db_string = 'mongodb://' + db_user + ':' + db_password + '@ds157185.mlab.com:57185/lostfound';
+*/
+var db_string = 'mongodb://localhost/lostnfound';
 //connecting to db
 mongoose.connect(db_string/*, db_options*/).then(
     () => { console.log('DB connected successfully!'); },
