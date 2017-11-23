@@ -6,28 +6,31 @@ var Issue = require('../models/issue.js');
 	issue: the issue we are examining with an attribute added: score
 */
 function searchInIssue(tag, issue) {
+	console.log(tag);
+	console.log(issue);
+	console.log(issue.content.tags);
 	var min = 0;
 	var max = issue.content.tags.length -1;
 	var found = false;
 	//binary search
-	while(tag.parsed >= issue.content.tags[min].parsed && tag.parsed <= issue.content.tags[max].parsed) {
-		var i = (max - min) / 2;
+	while(!found || (min <= max)) {
+		var i = parseInt((max + min) / 2);
+		console.log(i);
 		var current = issue.content.tags[i].parsed;
 		var diff = tag.parsed.localeCompare(current);
-		if(diff == 0)
+		if(diff == 0) {
 			found = true;
+			issue.score += 1.0;
+			var dist = Math.abs(tag.relevance - issue.content.tags[i].relevance);
+			if(dist == 0)
+				issue.score *= 1000;
+			else
+				issue.score *= (1.0/dist);
+		}
 		else if(diff > 0) 
-			min = i;
+			min = i + 1;
 		else
-			max = i;
-	}
-	if(found) {
-		issue.score += 1.0;
-		var dist = Math.abs(tag.relevance - issue.content.tags[i].relevance);
-		if(dist == 0)
-			issue.score *= 1000;
-		else
-			issue.score *= (1.0/dist);
+			max = i - 1;
 	}
 }
 
@@ -42,18 +45,22 @@ function compareFunction(a, b) {
 */
 function matching(issue, allIssues, k) {
 	var issuewithcounter = [];
+	console.log("Entering function");
 	for(var i = 0; i < allIssues.length; i++) {
+		console.log("Into the first loop");
 		var obj = {
 			content: allIssues[i],
 			score: 0.0
 		};
 		issuewithcounter.push(obj);
 	}
+	console.log("Issues with counter created");
 	for(var i = 0; i < issue.tags.length; i++) {	
 		for(var j = 0; j < issuewithcounter.length; j++) {
 			searchInIssue(issue.tags[i], issuewithcounter[j]);
 		}
 	}
+	console.log("Comparison finished");
 	issuewithcounter.sort(compareFunction);
 	return issuewithcounter.slice(0,k);
 }
