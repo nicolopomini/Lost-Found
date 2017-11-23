@@ -7,10 +7,10 @@ var Issue = require('../models/issue.js');
 */
 function searchInIssue(tag, issue) {
 	var min = 0;
-	var max = issue.content.tags.length;
+	var max = issue.content.tags.length -1;
 	var found = false;
 	//binary search
-	while(!found) {
+	while(tag.parsed >= issue.content.tags[min].parsed && tag.parsed <= issue.content.tags[max].parsed) {
 		var i = (max - min) / 2;
 		var current = issue.content.tags[i].parsed;
 		var diff = tag.parsed.localeCompare(current);
@@ -57,4 +57,5 @@ function matching(issue, allIssues, k) {
 	issuewithcounter.sort(compareFunction);
 	return issuewithcounter.slice(0,k);
 }
-express.export = matching;
+express.exports = matching;
+module.exports = matching;
