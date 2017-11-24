@@ -5,7 +5,6 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 
 //db-like schema constructors
-var Tag = require('../models/tag.js');
 var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
@@ -16,10 +15,15 @@ router.get('/', function(req, res) {
   console.log('Search by DESCRIPTION');
 
   //new issue from get parameters
-  var issue = new Issue(req.query);
+  var issue = new Issue();
+  issue.description = 'Prova';
+  issue.type = 'found';
+  issue.tags = [{original: 'AAAA', parsed: 'a ', relevance : 0.1}];
+  var error = issue.validateSync();
   //TODO issue type = 'search'
   console.log('New issue:');
   console.log(issue);
+  console.log(error);
 
   //DEBUG
   res.send('OK');
