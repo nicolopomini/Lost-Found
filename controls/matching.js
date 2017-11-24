@@ -18,12 +18,6 @@ function searchInIssue(tag, issue) {
 	var max = issue.content.tags.length -1;
 	var found = false;
 
-	/*
-	//DEBUG
-	console.log(Math.round(10.3));
-	console.log(Math.round(10.6));
-	*/
-
 	//binary search
 	while(!found || (min <= max)) {
 		//MOTIVO ERRORE
