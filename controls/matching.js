@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 var express = require('express');
 var Issue = require('../models/issue.js');
 
@@ -6,16 +8,31 @@ var Issue = require('../models/issue.js');
 	issue: the issue we are examining with an attribute added: score
 */
 function searchInIssue(tag, issue) {
+	//DEBUG
 	console.log(tag);
 	console.log(issue);
 	console.log(issue.content.tags);
+
+	//initializing binary search
 	var min = 0;
 	var max = issue.content.tags.length -1;
 	var found = false;
+
+	/*
+	//DEBUG
+	console.log(Math.round(10.3));
+	console.log(Math.round(10.6));
+	*/
+
 	//binary search
 	while(!found || (min <= max)) {
-		var i = parseInt((max + min) / 2);
-		console.log(i);
+		//MOTIVO ERRORE
+		//parseInt(10.3) = Math.round(10.3) = 10
+		//parseInt(10.6) = 10
+		//Math.round(10.6) = 11
+		var i = Math.round((max + min) / 2);
+		console.log(i); //DEBUG
+
 		var current = issue.content.tags[i].parsed;
 		var diff = tag.parsed.localeCompare(current);
 		if(diff == 0) {
@@ -27,42 +44,55 @@ function searchInIssue(tag, issue) {
 			else
 				issue.score *= (1.0/dist);
 		}
-		else if(diff > 0) 
+		else if(diff > 0)
 			min = i + 1;
 		else
 			max = i - 1;
+
+		//DEBUG
+		console.log("diff = " + diff);
+		console.log("i = " + i);
+		console.log("max = " + max);
+		console.log("min = " + min);
 	}
 }
+exports.searchInIssue = searchInIssue;
 
 //function to compare the final score of two issues
 function compareFunction(a, b) {
 	return a.score - b.score;
 }
+exports.compareFunction = compareFunction;
+
 /*
 	issue: the brand new issue just insered
 	allIssues: all other issues stored in the db, with correct type and time
-	k: numer of issues to return
+	k: number of issues to return
 */
-function matching(issue, allIssues, k) {
-	var issuewithcounter = [];
-	console.log("Entering function");
+function match(issue, allIssues, k) {
+	var issueWithCounter = [];
+
 	for(var i = 0; i < allIssues.length; i++) {
-		console.log("Into the first loop");
+		console.log("Loop #" + i);
 		var obj = {
 			content: allIssues[i],
 			score: 0.0
 		};
-		issuewithcounter.push(obj);
+		issueWithCounter.push(obj);
 	}
+
+	//console.log(issueWithCounter); return;
+
 	console.log("Issues with counter created");
-	for(var i = 0; i < issue.tags.length; i++) {	
-		for(var j = 0; j < issuewithcounter.length; j++) {
-			searchInIssue(issue.tags[i], issuewithcounter[j]);
+	for(var i = 0; i < issue.tags.length; i++) {
+		for(var j = 0; j < issueWithCounter.length; j++) {
+			console.log("[" + i + ", " + j + "]");
+			searchInIssue(issue.tags[i], issueWithCounter[j]);
 		}
 	}
+
 	console.log("Comparison finished");
-	issuewithcounter.sort(compareFunction);
-	return issuewithcounter.slice(0,k);
+	issueWithCounter.sort(compareFunction);
+	return issueWithCounter.slice(0,k);
 }
-express.exports = matching;
-module.exports = matching;
+exports.match = match;

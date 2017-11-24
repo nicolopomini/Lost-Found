@@ -1,4 +1,6 @@
 const matching = require("../controls/matching");
+const match = matching.match;
+
 var issues = [
 	{
 		description: "Pinco pallino",
@@ -35,7 +37,8 @@ var issues = [
 		]
 	}
 ];
-var newissue = {
+
+var newIssue = {
 	description: "Trovato portafiglio rosso",
 	tags:[
 		{
@@ -50,5 +53,7 @@ var newissue = {
 };
 
 test("Ricerca portafoglio", () => {
-	expect(matching(newissue, issues,1).toEqual(issues[1]));
+	var result = match(newIssue, issues, 1);
+	expect(result).toEqual(issues[1]);
+});
 });

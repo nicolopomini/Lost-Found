@@ -1,1 +1,4 @@
 .DS_Store
+
+#ignores node_modules (use 'npm install' after pulling instead)
+/node_modules
