@@ -56,4 +56,3 @@ test("Ricerca portafoglio", () => {
 	var result = match(newIssue, issues, 1);
 	expect(result).toEqual(issues[1]);
 });
-});
