@@ -1,1 +1,5 @@
 .DS_Store
+
+#ignores app.js, which is configured for local developement purposes
+app.js
+/node_modules
