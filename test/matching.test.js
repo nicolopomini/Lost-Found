@@ -1,21 +1,8 @@
-const matching = require("../controls/matching");
+const matching = require("../models/matching");
 const match = matching.match;
 
 var issues = [
-	{
-		description: "Pinco pallino",
-		tags:[
-			{
-				parsed: "pallino",
-				relevance: 0.89
-			},
-			{
-				parsed: "pinco",
-				relevance: 0.98
-			}
-		]
-	},
-	{
+{
 		description: "Portafiglio rosso di pinco pallino",
 		tags:[
 			{
@@ -33,6 +20,19 @@ var issues = [
 			{
 				parsed: "rosso",
 				relevance: 0.96
+			}
+		]
+	},
+	{
+		description: "Pinco pallino",
+		tags:[
+			{
+				parsed: "pallino",
+				relevance: 0.89
+			},
+			{
+				parsed: "pinco",
+				relevance: 0.98
 			}
 		]
 	}
@@ -53,6 +53,6 @@ var newIssue = {
 };
 
 test("Ricerca portafoglio", () => {
-	var result = match(newIssue, issues, 1);
-	expect(result).toEqual(issues[1]);
+	var result = match(newIssue, issues, 1)[0];
+	expect(result).toEqual(issues[0]);
 });
