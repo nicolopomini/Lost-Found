@@ -1,4 +1,4 @@
-const matching = require("../models/matching");
+const matching = require("../models/issue.matching");
 const match = matching.match;
 
 var issues = [

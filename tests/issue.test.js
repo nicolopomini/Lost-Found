@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Issue = require('../models/issue.js');
+//const mongoose = require('mongoose');
+const Issue = require('../models/issue');
 
 //valid tag
 var tag1 = {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user.js');
+const User = require('./user');
+const Tag = require('./issue.tag');
 
 var IssueSchema = new Schema({
   //document property: SchemaType
