@@ -1,4 +1,9 @@
 .DS_Store
+<<<<<<< HEAD
 
 #ignores app.js, which is configured for local developement purposes
 app.js
+
+#ignores node_modules upload, use 'npm install' instead
+/node_modules
+>>>>>>> 75f3c895979cd03fa8201b3d75cedb0024212216
