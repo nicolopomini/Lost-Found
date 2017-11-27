@@ -19,7 +19,7 @@ var IssueSchema = new Schema({
   type: {type: String, enum: ['searching','found']} //searching or found?
 });
 
-//function to sort tags
+//method used to sort tags internally to an Issue istance
 IssueSchema.methods.sortTags = function(t1,t2) {
 	return t1.parsed.localeCompare(t2.parsed);
 }
@@ -71,6 +71,23 @@ IssueSchema.methods.addTags = function(keywords) {
 //sorting tags by parsed text
 IssueSchema.methods.sortTags = function() {
   this.tags.sort(Tag.sortTagByParsed);
+}
+
+//searching for issues wich are suitable for matching
+//resurns a promise (?)
+IssueSchema.query.searchSuitable = function() {
+  //using 'self' to bind the scope of 'this' inside the query
+  var self = this;
+
+  //returning the issues if:
+  //max 30 days delay from today
+  var limit = new Date(); //today
+  limit.setDate(limit.getDate() - 30); //today - 30 days
+  return this.find({
+    inserted: {$gt: limit}
+  }).sort({
+    inserted: 'desc'
+  });
 }
 
 //exporting Issue object
