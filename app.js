@@ -7,20 +7,19 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var index = require('./routes/index');
 var issues = require('./routes/issues');
+var nconf = require('nconf');
 
+//stting up app's root
 var app = express();
+
+//loading config file into nconf
+nconf.file('./config/config.json');
 
 //instancing db connection
 mongoose.Promise = global.Promise;
-/*
-//defining db
-var db_user = 'se2';
-var db_password = 'qwerty';
-var db_string = 'mongodb://' + db_user + ':' + db_password + '@ds157185.mlab.com:57185/lostfound';
-*/
-var db_string = 'mongodb://localhost/lostnfound';
 //connecting to db
-mongoose.connect(db_string/*, db_options*/).then(
+var db = nconf.get('db');
+mongoose.connect(db).then(
     () => { console.log('DB connected successfully!'); },
     err => { console.error(`Error while connecting to DB: ${err.message}`); }
 );

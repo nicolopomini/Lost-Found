@@ -2,7 +2,7 @@
 <<<<<<< HEAD
 
 #ignores app.js, which is configured for local developement purposes
-app.js
+#app.js
 
 #ignores node_modules upload, use 'npm install' instead
 /node_modules

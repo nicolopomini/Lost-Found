@@ -1,0 +1,8 @@
+{
+  "db": {
+    "string": "mongodb://ds157185.mlab.com:57185/lostfound",
+    "useMongoClient": true,
+    "user": "se2",
+    "pass": "qwerty"
+  }
+}
