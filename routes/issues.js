@@ -8,26 +8,7 @@ var router = express.Router();
 var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
-//SEARCHING FOR AN ITEM (USING DESCRIPTION)
-//search for matching issue by tag comparison
-router.get('/', function(req, res) {
-  //DEBUG
-  console.log('Search by DESCRIPTION');
-
-  //new issue from get parameters
-  var issue = new Issue();
-  issue.description = 'Prova';
-  issue.type = 'found';
-  issue.tags = [{original: 'AAAA', parsed: 'a ', relevance : 0.1}];
-  var error = issue.validateSync();
-  //TODO issue type = 'search'
-  console.log('New issue:');
-  console.log(issue);
-  console.log(error);
-
-  //DEBUG
-  res.send('OK');
-});
+//Inserting an issue of a searched object
 router.post('/search', function(req, res) {
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
