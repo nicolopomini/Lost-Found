@@ -18,8 +18,9 @@ nconf.file('./config/config.json');
 //instancing db connection
 mongoose.Promise = global.Promise;
 //connecting to db
-var db = nconf.get('db');
-mongoose.connect(db).then(
+var db_options = nconf.get('db_options'); 
+var db_path = nconf.get('db_path');
+mongoose.connect(db_path, db_options).then(
     () => { console.log('DB connected successfully!'); },
     err => { console.error(`Error while connecting to DB: ${err.message}`); }
 );
