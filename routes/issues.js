@@ -28,6 +28,38 @@ router.get('/', function(req, res) {
   //DEBUG
   res.send('OK');
 });
+router.post('/search', function(req, res) {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  var description = req.query.descrizione;
+  var room = req.query.aula;
+  var time = req.query.data;
+  var error = false;
+  if(!description)
+    error = true;
+  var issue = new Issue();
+  if(error)
+    issue = null;
+  else {
+    issue.description = description;
+    issue.room = room;
+    issue.time = time;
+    issue.type = 'searching';
+    issue.watson((err, risp) => {
+      if(err == null) 
+        issue.addTags(risp.keywords);
+      else 
+        error = true;
+    } );
+  }
+  var respJSON = {};
+  respJSON.error = error;
+  if(error)
+    respJSON.issue = null;
+  else
+    respJSON.issue = issue._id;
+  res.send(JSON.stringify(respJSON));
+});
 
 //SEARCHING FOR AN ITEM (USING ID)
 router.get('/:id', function(req, res) {
