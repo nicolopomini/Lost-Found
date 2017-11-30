@@ -5,18 +5,15 @@ HOST: https://nicolopomini-lostfound.herokuapp.com/
 
 API per segnalare un oggetto che hai smarrito o che hai ritrovato
 
-## Segnalare un oggetto smarrito [/issues/search]
+## Segnalare un oggetto smarrito [/issues/search{?descrizione,aula,data}]
 
 ### Segnala oggetto smarrito [GET]
 
-+ Request 200 (text/html; charset=utf-8)
++ Parameters
+    + descrizione - Descrizione testuale dell'oggetto trovato
+    + aula (optional) - Aula in cui l'oggetto è stato trovato
+    + data (optional) - Data nella quale l'oggetto è stato trovato
 
-        {
-            "descrizione" : "I lost a white Faber Castel pencil.",
-            "aula" : "A201",
-            "data" : "2017-11-26"
-        }
-I campi "aula" e "data" possono essere nulli.
 + Response 200 (application/json)
 
         {
@@ -24,18 +21,15 @@ I campi "aula" e "data" possono essere nulli.
             "issue" : "507f1f77bcf86cd799439011"
         }
 
-## Segnalare un oggetto trovato [/issues/found]
+## Segnalare un oggetto trovato [/issues/found{?descrizione,aula,data}]
 
 ### Segnala oggetto trovato [GET]
 
-+ Request 200 (text/html; charset=utf-8)
++ Parameters
+    + descrizione - Descrizione testuale dell'oggetto trovato
+    + aula (optional) - Aula in cui l'oggetto è stato trovato
+    + data (optional) - Data nella quale l'oggetto è stato trovato
 
-        {
-            "descrizione" : "I found a black Rayban sunglasses.",
-            "aula" : "A105",
-            "data" : "2017-12-1"
-        }
-I campi "aula" e "data" possono essere nulli.
 + Response 200 (application/json)
 
         {
@@ -43,9 +37,11 @@ I campi "aula" e "data" possono essere nulli.
             "issue" : "507f1f24bcf86cd593319107"
         }
 
-## Cercare segnalazioni corrispondenti ad una issue [/issues/:issueid]
+## Cercare segnalazioni corrispondenti ad una issue [/issues/{issueid}]
 
 ### Cerca issues [GET]
++ Parameters
+    + issueid - A valid issue id
 
 + Response 200 (application/json)
 
