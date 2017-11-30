@@ -42,6 +42,40 @@ router.post('/search', function(req, res) {
   res.send(JSON.stringify(respJSON));
 });
 
+//Inserting an issue of a found object
+router.post('/found', function(req, res) {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  var description = req.query.descrizione;
+  var room = req.query.aula;
+  var time = req.query.data;
+  var error = false;
+  if(!description)
+    error = true;
+  var issue = new Issue();
+  if(error)
+    issue = null;
+  else {
+    issue.description = description;
+    issue.room = room;
+    issue.time = time;
+    issue.type = 'found';
+    issue.watson((err, risp) => {
+      if(err == null) 
+        issue.addTags(risp.keywords);
+      else 
+        error = true;
+    } );
+  }
+  var respJSON = {};
+  respJSON.error = error;
+  if(error)
+    respJSON.issue = null;
+  else
+    respJSON.issue = issue._id;
+  res.send(JSON.stringify(respJSON));
+});
+
 //SEARCHING FOR AN ITEM (USING ID)
 router.get('/:id', function(req, res) {
   var id = req.params.id;
@@ -63,21 +97,6 @@ router.get('/:id', function(req, res) {
     res.send(issues);
   });
 
-});
-
-//FOUND ITEM
-//new issue from post parameters
-router.post('/', function(req, res) {
-  //DEBUG
-  console.log('Inserting FOUND');
-
-  //creating an Issue istance from POST parameters
-  var issue = new Issue(req.body);
-  //TODO issue type = 'found'
-  console.log('New issue:');
-  console.log(issue);
-
-  handleIssue(issue);
 });
 
 //handling issue search
