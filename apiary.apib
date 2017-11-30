@@ -1,0 +1,66 @@
+FORMAT: 1A
+HOST: https://nicolopomini-lostfound.herokuapp.com/
+
+# Lost & Found
+
+API per segnalare un oggetto che hai smarrito o che hai ritrovato
+
+## Segnalare un oggetto smarrito [/issues/search]
+
+### Segnala oggetto smarrito [GET]
+
++ Request 200 (text/html; charset=utf-8)
+
+        {
+            "descrizione" : "I lost a white Faber Castel pencil.",
+            "aula" : "A201",
+            "data" : "2017-11-26"
+        }
+I campi "aula" e "data" possono essere nulli.
++ Response 200 (application/json)
+
+        {
+            "error" : "false",
+            "issue" : "507f1f77bcf86cd799439011"
+        }
+
+## Segnalare un oggetto trovato [/issues/found]
+
+### Segnala oggetto trovato [GET]
+
++ Request 200 (text/html; charset=utf-8)
+
+        {
+            "descrizione" : "I found a black Rayban sunglasses.",
+            "aula" : "A105",
+            "data" : "2017-12-1"
+        }
+I campi "aula" e "data" possono essere nulli.
++ Response 200 (application/json)
+
+        {
+            "error" : "false",
+            "issue" : "507f1f24bcf86cd593319107"
+        }
+
+## Cercare segnalazioni corrispondenti ad una issue [/issues/:issueid]
+
+### Cerca issues [GET]
+
++ Response 200 (application/json)
+
+        {
+            "error" : "false",
+            "issues": 
+            [
+                {
+                    "description" : "I found a black Rayban sunglasses.",
+                    "room" : "A105",
+                    "time" : "2017-11-27",
+                    "inserted" : "2017-12-4",
+                    "author" : {
+                        "?" : "???"
+                    }
+                }
+            ]
+        }
