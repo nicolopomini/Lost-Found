@@ -8,6 +8,8 @@ var router = express.Router();
 var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
+var matching = require('../models/issue.matching');
+
 //SEARCHING FOR AN ITEM (USING DESCRIPTION)
 //search for matching issue by tag comparison
 router.get('/', function(req, res) {
@@ -29,27 +31,35 @@ router.get('/', function(req, res) {
   res.send('OK');
 });
 
-//SEARCHING FOR AN ITEM (USING ID)
-router.get('/:id', function(req, res) {
-  var id = req.params.id;
-
-  /*
-  //DEBUG
-  var debug = 'Search by ID (= ' + id + ')';
-  console.log(debug);
-  res.send(debug);
-  */
-
-  //searching for a specific item
-  Issue.find({}, function(err, issues) {
-    //handling db errors
-    if(err) handleError(err);
-    //works!
-    console.log('Found:');
-    console.log(issues);
-    res.send(issues);
+//Matching the given issue with all the other issues
+router.get('/:issueid', function(req, res) {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  var id = req.params.issueid;
+  if(!id) {
+    handleError(res, "Issue id required");
+    return;
+  }
+  Issue.findById(id, (err, issue) => {
+    if(err)
+      hadleError(res, "Required issue does not exist.");
+    var limit = new Date(); //today
+    limit.setDate(limit.getDate() - 30); //today - 30 days
+    var opposit_type = issue.type == 'searching' ? 'found' : 'searching';
+    console.log(limit);
+    console.log(opposit_type);
+    Issue.find({
+      type: opposit_type,
+      inserted: {$gt: limit}
+    }, (err, issues) => {
+      if(err)
+        hadleError(res, "Error during retriving issues into mongo");
+      var rtr = {};
+      rtr.error = "false";
+      rtr.issues = matching.match(issue,issues,1);
+      res.send(JSON.stringify(rtr));
+    });
   });
-
 });
 
 //FOUND ITEM
@@ -67,6 +77,13 @@ router.post('/', function(req, res) {
   handleIssue(issue);
 });
 
+//handling errors in API functions
+function hadleError(res, error) {
+  var toSend = {};
+  toSend.error = error;
+  toSend.issue = null;
+  res.send(JSON.stringify(toSend));
+}
 //handling issue search
 function handleIssue(issue) {
   //issue attributes are not valid => no response
