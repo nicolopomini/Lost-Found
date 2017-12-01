@@ -46,8 +46,6 @@ router.get('/:issueid', function(req, res) {
     var limit = new Date(); //today
     limit.setDate(limit.getDate() - 30); //today - 30 days
     var opposit_type = issue.type == 'searching' ? 'found' : 'searching';
-    console.log(limit);
-    console.log(opposit_type);
     Issue.find({
       type: opposit_type,
       inserted: {$gt: limit}

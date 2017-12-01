@@ -21,7 +21,7 @@ function searchInIssue(tag, issue) {
 			var score = 1.0;
 			var dist = Math.abs(tag.relevance - issue.content.tags[i].relevance);
 			if(dist == 0)
-				score *= 1000;
+				score *= 200;
 			else
 				score *= (1.0/dist);
 			issue.score += score;
@@ -46,6 +46,8 @@ exports.compareFunction = compareFunction;
 	k: number of issues to return
 */
 function match(issue, allIssues, k) {
+	if(allIssues.length == 0)
+		return [];
 	var issueWithCounter = [];
 
 	for(var i = 0; i < allIssues.length; i++) {
