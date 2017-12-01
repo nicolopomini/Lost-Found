@@ -10,70 +10,12 @@ var Issue = require('../models/issue.js');
 
 //Inserting an issue of a searched object
 router.post('/search', function(req, res) {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  var description = req.query.descrizione;
-  var room = req.query.aula;
-  var time = req.query.data;
-  var error = false;
-  if(!description)
-    error = true;
-  var issue = new Issue();
-  if(error)
-    issue = null;
-  else {
-    issue.description = description;
-    issue.room = room;
-    issue.time = time;
-    issue.type = 'searching';
-    issue.watson((err, risp) => {
-      if(err == null) 
-        issue.addTags(risp.keywords);
-      else 
-        error = true;
-    } );
-  }
-  var respJSON = {};
-  respJSON.error = error;
-  if(error)
-    respJSON.issue = null;
-  else
-    respJSON.issue = issue._id;
-  res.send(JSON.stringify(respJSON));
+  insertIssue(req, res, 'searching');
 });
 
 //Inserting an issue of a found object
 router.post('/found', function(req, res) {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  var description = req.query.descrizione;
-  var room = req.query.aula;
-  var time = req.query.data;
-  var error = false;
-  if(!description)
-    error = true;
-  var issue = new Issue();
-  if(error)
-    issue = null;
-  else {
-    issue.description = description;
-    issue.room = room;
-    issue.time = time;
-    issue.type = 'found';
-    issue.watson((err, risp) => {
-      if(err == null) 
-        issue.addTags(risp.keywords);
-      else 
-        error = true;
-    } );
-  }
-  var respJSON = {};
-  respJSON.error = error;
-  if(error)
-    respJSON.issue = null;
-  else
-    respJSON.issue = issue._id;
-  res.send(JSON.stringify(respJSON));
+  insertIssue(req, res, 'found');
 });
 
 //SEARCHING FOR AN ITEM (USING ID)
@@ -99,32 +41,85 @@ router.get('/:id', function(req, res) {
 
 });
 
-//handling issue search
-function handleIssue(issue) {
-  //issue attributes are not valid => no response
-  if(!issue.validAttr()) return;
+//takes in the issue request and the issue's type
+//elaborates the issue trough watson
+//inserts the issue
+function insertIssue(req, res, type) {
+  //gets params from post
+  var params = req.query;
+  //assgning the issue's type to the issue's params
+  params.type = type;
+  //sets the insertion date
+  params.inserted = Date.now();
+  //creating issue using params
+  var issue = new Issue(params);
 
-  //generating tags inside the issue class
-  issue.generateTags();
+  /*
+  //debug
+  console.log('Issue:');
+  console.log(issue);
+  res.send(issue);
+  return;
+  */
 
-  //saving the issue into the db
-  issue.save(function(err) {
-    //handling db errors
-    if (err) return handleError(err);
-    //saved!
-    console.log('Saved:');
-    console.log(issue);
-  }).then(function(){ //then() is used to assure that the new issue has been inserted
-    //searching for matching TagSchema
-    //search for issues with matching tags
-    Issue.find({}, function(err, res) {
-      //handling db errors
-      if(err) handleError(err);
-      //works!
-      console.log('Searching:');
-      console.log(res);
+  //setting up the response headers
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+
+  //validating created issues
+  var valid = (!issue.validateSync());
+
+  /*
+  //debug
+  console.log('valid?');
+  console.log(valid);
+  return;
+  */
+
+  //checking if parameters are valid
+  if(valid) {
+    //calling ibm watson for nlp elaboration
+    issue.watson((wErr, wRes) => {
+      /*
+      //debug
+      console.log('Watson');
+      console.log(wErr);
+      console.log(JSON.stringify(wRes));
+      return;
+      */
+
+      var jRes = {} //json response object
+      //no error thrown by watson: parsing tags
+      if(wErr == null) {
+        //adding tags to issue
+        issue.addTags(wRes.keywords);
+
+        /*
+        //debug
+        console.log('Parsed issue');
+        console.log(issue);
+        return;
+        */
+
+        jRes.error = false;
+        jRes.issue = issue._id;
+      }
+      //watson's error
+      else {
+        jRes.error = true;
+        jRes.issue = null;
+      }
+
+      /*
+      //debug
+      console.log('Result');
+      console.log(jRes);
+      */
+
+      //output
+      res.json(jRes);
     });
-  });
+  }
 }
 
 module.exports = router;

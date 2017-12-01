@@ -18,7 +18,7 @@ nconf.file('./config/config.json');
 //instancing db connection
 mongoose.Promise = global.Promise;
 //connecting to db
-var db_options = nconf.get('db_options'); 
+var db_options = nconf.get('db_options');
 var db_path = nconf.get('db_path');
 mongoose.connect(db_path, db_options).then(
     () => { console.log('DB connected successfully!'); },
@@ -37,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//routes
 app.use('/', index);
 app.use('/issues', issues);
 
