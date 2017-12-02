@@ -1,5 +1,24 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	div.container#lost
+		div
+			h1.text-holder#h1lost LOST
+			div.form#form-lost.
+				block form1
+	div#line
+		h1#and &
+	div.container#found
+		div
+			h1.text-holder#h1found FOUND
+			div.form#form-found.
+				block form
+
+
+
+block form1
+	a
+	
+
+block form
+	ab
