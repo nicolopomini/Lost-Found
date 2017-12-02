@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var index = require('./routes/index');
 var issues = require('./routes/issues');
+var auth = require('./routes/auth');
 var nconf = require('nconf');
 
 //stting up app's root
@@ -40,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routes
 app.use('/', index);
 app.use('/issues', issues);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
