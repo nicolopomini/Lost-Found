@@ -8,91 +8,75 @@ var router = express.Router();
 var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
-//SEARCHING FOR AN ITEM (USING DESCRIPTION)
-//search for matching issue by tag comparison
-router.get('/', function(req, res) {
-  //DEBUG
-  console.log('Search by DESCRIPTION');
-
-  //new issue from get parameters
-  var issue = new Issue();
-  issue.description = 'Prova';
-  issue.type = 'found';
-  issue.tags = [{original: 'AAAA', parsed: 'a ', relevance : 0.1}];
-  var error = issue.validateSync();
-  //TODO issue type = 'search'
-  console.log('New issue:');
-  console.log(issue);
-  console.log(error);
-
-  //DEBUG
-  res.send('OK');
+//Inserting an issue of a searched object
+router.post('/search', function(req, res) {
+  insertIssue(req, res, 'searching');
 });
 
-//SEARCHING FOR AN ITEM (USING ID)
-router.get('/:id', function(req, res) {
-  var id = req.params.id;
-
-  /*
-  //DEBUG
-  var debug = 'Search by ID (= ' + id + ')';
-  console.log(debug);
-  res.send(debug);
-  */
-
-  //searching for a specific item
-  Issue.find({}, function(err, issues) {
-    //handling db errors
-    if(err) handleError(err);
-    //works!
-    console.log('Found:');
-    console.log(issues);
-    res.send(issues);
-  });
-
+//Inserting an issue of a found object
+router.post('/found', function(req, res) {
+  insertIssue(req, res, 'found');
 });
 
-//FOUND ITEM
-//new issue from post parameters
-router.post('/', function(req, res) {
-  //DEBUG
-  console.log('Inserting FOUND');
+//takes in the issue request and the issue's type
+//elaborates the issue trough watson
+//inserts the issue
+function insertIssue(req, res, type) {
+  //gets params from post
+  var params = req.body;
+  //assgning the issue's type to the issue's params
+  params.type = type;
+  //sets the insertion date
+  params.inserted = Date.now();
+  //creating issue using params
+  var issue = new Issue(params);
+  issue.description = params.descrizione;
+  issue.time = params.data;
+  issue.room = params.aula;
 
-  //creating an Issue istance from POST parameters
-  var issue = new Issue(req.body);
-  //TODO issue type = 'found'
-  console.log('New issue:');
-  console.log(issue);
+  //setting up the response headers
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
 
-  handleIssue(issue);
-});
+  //validating created issues
+  var valid = (!issue.validateSync());
 
-//handling issue search
-function handleIssue(issue) {
-  //issue attributes are not valid => no response
-  if(!issue.validAttr()) return;
-
-  //generating tags inside the issue class
-  issue.generateTags();
-
-  //saving the issue into the db
-  issue.save(function(err) {
-    //handling db errors
-    if (err) return handleError(err);
-    //saved!
-    console.log('Saved:');
-    console.log(issue);
-  }).then(function(){ //then() is used to assure that the new issue has been inserted
-    //searching for matching TagSchema
-    //search for issues with matching tags
-    Issue.find({}, function(err, res) {
-      //handling db errors
-      if(err) handleError(err);
-      //works!
-      console.log('Searching:');
-      console.log(res);
+  //checking if parameters are valid
+  if(valid) {
+    //calling ibm watson for nlp elaboration
+    issue.watson((wErr, wRes) => {
+      var jRes = {} //json response object
+      //no error thrown by watson: parsing tags
+      if(wErr == null) {
+        //adding tags to issue
+        issue.addTags(wRes.keywords);
+        issue.sortTags();
+        issue.save((err) => {
+          if(err) {
+            jRes.error = "Error in db inserting.";
+            jRes.issue = null;
+            res.json(jRes);
+          }
+        });
+          jRes.error = false;
+          jRes.issue = issue._id;
+      }
+      //watson's error
+      else {
+        jRes.error = "Error during issue parsing.";
+        jRes.issue = null;
+      }
+      //output
+      res.json(jRes);
     });
-  });
+  } else {
+    var jRes = {};
+    jRes.error = "Issue not valid";
+    jRes.issue = null;
+    res.json(jRes);
+  }
 }
+
+
 
 module.exports = router;
