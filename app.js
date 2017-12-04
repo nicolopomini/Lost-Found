@@ -12,6 +12,7 @@ const session = require('express-session');
 const MemcachedStore = require('connect-memcached')(session);
 const passport = require('passport');
 const config = require('./config');
+var auth = require('./routes/auth');
 
 //stting up app's root
 var app = express();
@@ -65,7 +66,7 @@ app.use(session(sessionConfig));
 // OAuth2
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(require('./routes/auth').router);
+app.use(auth.router);
 
 //routes
 app.use('/', index);
@@ -90,18 +91,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-/*
-app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-*/
 
 module.exports = app;
