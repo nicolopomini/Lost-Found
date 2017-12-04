@@ -7,8 +7,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var index = require('./routes/index');
 var issues = require('./routes/issues');
-var auth = require('./routes/auth');
 var nconf = require('nconf');
+const session = require('express-session');
+const MemcachedStore = require('connect-memcached')(session);
+const passport = require('passport');
+const config = require('./config');
 
 //stting up app's root
 var app = express();
@@ -38,10 +41,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// [START session]
+// Configure the session and session storage.
+const sessionConfig = {
+  resave: false,
+  saveUninitialized: false,
+  secret: config.get('SECRET'),
+  signed: true
+};
+
+// In production use the App Engine Memcache instance to store session data,
+// otherwise fallback to the default MemoryStore in development.
+if (config.get('NODE_ENV') === 'production' && config.get('MEMCACHE_URL')) {
+  sessionConfig.store = new MemcachedStore({
+    hosts: [config.get('MEMCACHE_URL')]
+  });
+}
+
+app.use(session(sessionConfig));
+// [END session]
+
+
+// OAuth2
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(require('./routes/auth').router);
+
 //routes
 app.use('/', index);
 app.use('/issues', issues);
-app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,6 +77,8 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -60,5 +90,18 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+/*
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+*/
 
 module.exports = app;

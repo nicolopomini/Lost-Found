@@ -67,9 +67,9 @@ nconf
 
     OAUTH2_CLIENT_ID: '1059098531864-877e25bb4njnojsqm3vtq2agbsej4kuh.apps.googleusercontent.com',
     OAUTH2_CLIENT_SECRET: 'mN9AD_oEIjbuAYymOubvGtEO',
-    OAUTH2_CALLBACK: 'http://localhost:8080/auth/google/callback',
+    OAUTH2_CALLBACK: 'http://localhost:3000/auth/google/callback',
 
-    PORT: 8080,
+    PORT: 3000,
 
     // Set this a secret string of your choosing
     SECRET: 'lost&found'

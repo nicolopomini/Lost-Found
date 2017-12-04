@@ -1,8 +1,20 @@
+// Copyright 2017, Google, Inc.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 'use strict';
 
 const express = require('express');
 const config = require('../config');
-
 // [START setup]
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -19,7 +31,6 @@ function extractProfile (profile) {
   };
 }
 
-
 // Configure the Google strategy for use by Passport.js.
 //
 // OAuth 2-based strategies require a `verify` function which receives the
@@ -33,9 +44,15 @@ passport.use(new GoogleStrategy({
   callbackURL: config.get('OAUTH2_CALLBACK'),
   accessType: 'offline'
 }, (accessToken, refreshToken, profile, cb) => {
-  // Extract the minimal profile information we need from the profile object
-  // provided by Google
-  cb(null, extractProfile(profile));
+  if(profile._json.domain==='studenti.unitn.it' || profile._json.domain==='unitn.it'){
+    console.log('account università');
+    cb(null, extractProfile(profile));
+  }
+  else {
+    console.log('account NON università');
+    cb(null, false, { message: 'Accesso non consentito.' });
+  }
+
 }));
 
 passport.serializeUser((user, cb) => {
@@ -45,7 +62,6 @@ passport.deserializeUser((obj, cb) => {
   cb(null, obj);
 });
 // [END setup]
-
 
 const router = express.Router();
 
@@ -70,7 +86,6 @@ function addTemplateVariables (req, res, next) {
   next();
 }
 // [END middleware]
-
 
 // Begins the authorization flow. The user will be redirected to Google where
 // they can authorize the application to have access to their basic profile
@@ -123,8 +138,7 @@ router.get('/auth/logout', (req, res) => {
 
 module.exports = {
   extractProfile: extractProfile,
+  router: router,
   required: authRequired,
   template: addTemplateVariables
 };
-
-module.exports = router;
