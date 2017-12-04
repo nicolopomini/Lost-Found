@@ -77,9 +77,7 @@ function match(issue, allIssues) {
 	}
 	if(count > 0)
 		avg = total / count;
-	console.log(count);
-	console.log(total);
-	console.log(avg);
+	
 	var toReturn = [];
 	if(avg >= 0) {
 		issueWithCounter.sort(compareFunction);
