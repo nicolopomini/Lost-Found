@@ -21,8 +21,10 @@ router.get('/:issueid', function(req, res) {
     return;
   }
   Issue.findById(id, (err, issue) => {
-    if(err)
+    if(err) {
       hadleError(res, "Required issue does not exist.");
+      return;
+    }
     var limit = new Date(); //today
     limit.setDate(limit.getDate() - 30); //today - 30 days
     var opposit_type = issue.type == 'searching' ? 'found' : 'searching';
@@ -30,16 +32,15 @@ router.get('/:issueid', function(req, res) {
       type: opposit_type,
       inserted: {$gt: limit}
     }, (err, issues) => {
-      issues.forEach((val, index) => {
-        console.log(val);
-        console.log(issues[index].tags);
-        //ORDINATI!!! GG
-      });
-      if(err)
+      //issues: array di issue del db
+      //issue: singola issue da matchare
+      if(err) {
         hadleError(res, "Error during retriving issues into mongo");
+        return;
+      }
       var rtr = {};
       rtr.error = "false";
-      //rtr.issues = matching.match(issue,issues,1);
+      rtr.issues = matching.match(issue,issues,1);
       res.json(rtr);
     });
   });
