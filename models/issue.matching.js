@@ -45,11 +45,13 @@ exports.compareFunction = compareFunction;
 	allIssues: all other issues stored in the db, with correct type and time
 	k: number of issues to return
 */
-function match(issue, allIssues, k) {
+function match(issue, allIssues) {
+	//oggetti passati per riferimento
 	if(allIssues.length == 0)
 		return [];
-	var issueWithCounter = [];
 
+	//add the field 'score' to each issue
+	var issueWithCounter = [];
 	for(var i = 0; i < allIssues.length; i++) {
 		var obj = {
 			content: allIssues[i],
@@ -57,21 +59,35 @@ function match(issue, allIssues, k) {
 		};
 		issueWithCounter.push(obj);
 	}
-
+	//foreach tag, look for every issue that has that tag
 	for(var i = 0; i < issue.tags.length; i++) {
 		for(var j = 0; j < issueWithCounter.length; j++) {
 			searchInIssue(issue.tags[i], issueWithCounter[j]);
 		}
 	}
-
-	issueWithCounter.sort(compareFunction);
-	var toReturn = [];
-	for(var i = issueWithCounter.length - 1; k > 0 && i >= 0; i--) {
+	//computing avg
+	var total = 0;
+	var count = 0;
+	var avg = -1;
+	for(var i = 0; i < issueWithCounter.length; i++) {
 		if(issueWithCounter[i].score > 0) {
-			k--;
-			toReturn.push(issueWithCounter[i].content);
+			count++;
+			total += issueWithCounter[i].score;
 		}
 	}
-	return toReturn
+	if(count > 0)
+		avg = total / count;
+	console.log(count);
+	console.log(total);
+	console.log(avg);
+	var toReturn = [];
+	if(avg >= 0) {
+		issueWithCounter.sort(compareFunction);
+		for(var i = issueWithCounter.length - 1; i >= 0; i--) {
+			if(issueWithCounter[i].score > 0 && issueWithCounter[i].score >= avg) 
+				toReturn.push(issueWithCounter[i].content);
+		}
+	}
+	return toReturn;
 }
 exports.match = match;

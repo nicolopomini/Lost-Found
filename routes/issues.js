@@ -40,7 +40,7 @@ router.get('/:issueid', function(req, res) {
       }
       var rtr = {};
       rtr.error = "false";
-      rtr.issues = matching.match(issue,issues,1);
+      rtr.issues = matching.match(issue,issues);
       res.json(rtr);
     });
   });
