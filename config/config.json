@@ -1,8 +1,0 @@
-{
-  "db_options": {
-    "useMongoClient": true,
-    "user": "se2",
-    "pass": "qwerty"
-  },
-  "db_path": "mongodb://ds157185.mlab.com:57185/lostfound"
-}

@@ -78,13 +78,14 @@ IssueSchema.methods.sortTags = function() {
 IssueSchema.query.searchSuitable = function() {
   //using 'self' to bind the scope of 'this' inside the query
   var self = this;
-
+  var opposit_type = self.type == 'searching' ? 'found' : 'searching';
   //returning the issues if:
   //max 30 days delay from today
   var limit = new Date(); //today
   limit.setDate(limit.getDate() - 30); //today - 30 days
   return this.find({
-    inserted: {$gt: limit}
+    inserted: {$gt: limit},
+    type: opposit_type
   }).sort({
     inserted: 'desc'
   });
