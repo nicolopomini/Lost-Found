@@ -2,10 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	name: {type: String},
-	surname: {type: String},
-	email: {type: String},
-	password: {type: String}
+	id: {type: String, minlength: 1},
+	name: {type: String, minlength: 1},
+	email: {type: String, minlength: 1}
 });
 
 //returns if the user is authenticated or not
