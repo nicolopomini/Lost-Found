@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	id: {type: String, required: true, unique: true},
 	name: {type: String, required: true},
 	email: {type: String, validate: {
 		validator: (v) => {
@@ -12,7 +11,5 @@ var UserSchema = new Schema({
 	}
 });
 
-//returns if the user is authenticated or not
-UserSchema.methods.isAuth = function() {}
 
 module.exports = mongoose.model('User', UserSchema);

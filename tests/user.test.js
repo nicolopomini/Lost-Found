@@ -2,17 +2,14 @@ const User = require("../models/user");
 
 //valid user
 var u1 = new User();
-u1.id = '1234567890';
 u1.name = 'Fausto Giunchiglia';
 u1.email = 'fausto.giunchiglia@unitn.it';
 //invalid email
 var u2 = new User();
-u2.id = '1234567890';
 u2.name = 'Fausto Giunchiglia';
 u2.email = 'babbuiafuttalleba';
 //name not setted
 var u3 = new User();
-u3.id = '1234567890';
 u3.email = 'fausto.giunchiglia@unitn.it';
 
 //tests
