@@ -46,14 +46,6 @@ router.get('/:issueid', function(req, res) {
   });
 });
 
-
-//handling errors in API functions
-function hadleError(res, error) {
-  var toSend = {};
-  toSend.error = error;
-  toSend.issue = null;
-  res.json(toSend);
-}
 //Inserting an issue of a searched object
 router.post('/search', function(req, res) {
   insertIssue(req, res, 'searching');
@@ -91,7 +83,6 @@ function insertIssue(req, res, type) {
   if(valid) {
     //calling ibm watson for nlp elaboration
     issue.watson((wErr, wRes) => {
-      var jRes = {} //json response object
       //no error thrown by watson: parsing tags
       if(wErr == null) {
         //adding tags to issue
@@ -99,28 +90,30 @@ function insertIssue(req, res, type) {
         issue.sortTags();
         issue.save((err) => {
           if(err) {
-            jRes.error = "Error in db inserting.";
-            jRes.issue = null;
-            res.json(jRes);
+            handleError(res, "Error in db inserting.");
           }
         });
+          var jRes = {};
           jRes.error = false;
           jRes.issue = issue._id;
+          res.json(jRes);
       }
       //watson's error
       else {
-        jRes.error = "Error during issue parsing.";
-        jRes.issue = null;
+        handleError(res, "Error during issue parsing.");
       }
-      //output
-      res.json(jRes);
     });
   } else {
-    var jRes = {};
-    jRes.error = "Issue not valid";
-    jRes.issue = null;
-    res.json(jRes);
+      handleError(res, "Issue not valid.");
   }
+}
+
+//handling errors in API functions
+function hadleError(res, error) {
+  var toSend = {};
+  toSend.error = error;
+  toSend.issue = null;
+  res.json(toSend);
 }
 
 
