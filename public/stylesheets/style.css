@@ -5,7 +5,11 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-	font-family: 'Abril Fatface', cursive;
+}
+
+.dropdown-content {
+	max-height: 250px; !important
+	overflow-y: auto;
 }
 
 .container {
@@ -24,45 +28,67 @@ body {
 	font-family: 'Quicksand', sans-serif;
 	position: relative;
 	width: 100px;
+
+	margin: 110px 0;
 	text-align: center;
-	font-size: 7em;
+	font-size: 9em;
 } 
 
 #lost {
 	transition: all 1s;
+	background-color:#2ECC40;
 }
 
 #found {
 	transition: all 1s;
+	background-color:#FFDC00;
 }
 
 .text-holder {
 	padding:18px 7%;
-	font-size: 6em;
-/*	-webkit-text-stroke-width: 0.1px;
-	-webkit-text-stroke-color: #000;
-*/}
+	font-size: 8em;
+
+	color:#FFF;
+	margin: 100px 0 50px 0;
+	font-family: 'Abril Fatface', cursive;
+	font-weight: 600;
+}
 
 #h1lost {
 	direction: rtl;
-	color:#2ECC40;
 	transition: all 1s;
 }
 
 #h1found {
 	direction: ltr;
-	color:#FFDC00;
 	transition: all 1s;
 }
 
-.form {
+.myform {
 	overflow: hidden;
 	position: relative;
 	margin: 0 auto;
 	width: 70%;
-	background-color:red;
+
 	height: 0px;
 	
 	transition: all 1s;
 	transition-delay: 1s;
+}
+
+i.med {
+	font-size:2.5rem;
+}
+
+.userbutton {
+	top: 10px;
+}
+
+.submitter {
+	margin-top: 20px;
+	padding: 0 2rem !important; 
+}
+
+.centered {
+	margin:0 auto !important;
 }

@@ -1,24 +1,63 @@
 extends layout
 
 block content
+	div.fixed-action-btn.userbutton
+		a.btn-floating.btn-large.red
+			i.material-icons.med account_circle
 	div.container#lost
 		div
 			h1.text-holder#h1lost LOST
-			div.form#form-lost.
-				block form1
+			div.myform#form-lost
+				div.row
+					form.col.s12
+						div.input-field.col.s6
+							select(name="aula")
+								optgroup(label="polo A")
+									option(value="A105") A105
+									option(value="A103") A103
+								optgroup(label="polo B")
+									option(value="B107") B107
+									option(value="B105") b105
+							label Aula
+						div.input-field.col.s6
+							input.datepicker(type="text",name="data")
+							label Data di smarrimento
+						div.input-field.col.s9
+							input(type="text",name="testo")
+							label Descrizione
+						div.col.s3.submitter
+							button.btn.wawes-effect.waves-light.centered-button(type="submit",name="action") search
+								i.material-icons.right search
 	div#line
 		h1#and &
 	div.container#found
 		div
 			h1.text-holder#h1found FOUND
-			div.form#form-found.
-				block form
-
-
-
-block form1
-	a
-	
-
-block form
-	ab
+			div.myform#form-found
+				div.row
+					form.col.s12
+						div.input-field.col.s6
+							select(name="aula")
+								optgroup(label="polo A")
+									option(value="A105") A105
+									option(value="A103") A103
+								optgroup(label="polo B")
+									option(value="B107") B107
+									option(value="B105") b105
+							label Aula
+						div.input-field.col.s6
+							input.datepicker(type="text",name="data")
+							label Data di smarrimento
+						div.input-field.col.s12
+							textarea.materialize-textarea(type="text",name="testo")
+							label Descrizione
+						//div.col.s8
+							//div.file-field.input-field
+								//div.btn
+									//span upload photo
+									//input(type="file")
+								//div.file-path-wrapper
+									//input.file-path.validate(type="text")
+						div.col.s12.center-align
+							button.btn.wawes-effect.waves-light(type="submit",name="action") submit
+								i.material-icons.right send
