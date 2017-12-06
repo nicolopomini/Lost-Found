@@ -7,17 +7,20 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var index = require('./routes/index');
 var issues = require('./routes/issues');
+var nconf = require('nconf');
 
+//stting up app's root
 var app = express();
+
+//loading config file into nconf
+nconf.file('./config/config.json');
 
 //instancing db connection
 mongoose.Promise = global.Promise;
-//defining db
-var db_user = 'se2';
-var db_password = 'qwerty';
-var db_string = 'mongodb://' + db_user + ':' + db_password + '@ds157185.mlab.com:57185/lostfound';
 //connecting to db
-mongoose.connect(db_string/*, db_options*/).then(
+var db_options = nconf.get('db_options');
+var db_path = nconf.get('db_path');
+mongoose.connect(db_path, db_options).then(
     () => { console.log('DB connected successfully!'); },
     err => { console.error(`Error while connecting to DB: ${err.message}`); }
 );
@@ -34,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//routes
 app.use('/', index);
 app.use('/issues', issues);
 
