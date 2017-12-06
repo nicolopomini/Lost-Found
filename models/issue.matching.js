@@ -1,5 +1,5 @@
 var express = require('express');
-var Issue = require('../models/issue.js');
+const Issue = require('../models/issue.js');
 
 /*
 	tag: the tag object which we are looking for inside all issues

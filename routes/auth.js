@@ -1,25 +1,19 @@
-// Copyright 2017, Google, Inc.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
+//strict mode
 'use strict';
 
+//initializing router
 const express = require('express');
-const config = require('../config');
-// [START setup]
+const router = express.Router();
+
+//loading config file
+const config = require('../config/config.js');
+
+//passport + strategy setup
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 function extractProfile (profile) {
+  /*
   let imageUrl = '';
   if (profile.photos && profile.photos.length) {
     imageUrl = profile.photos[0].value;
@@ -29,10 +23,18 @@ function extractProfile (profile) {
     displayName: profile.displayName,
     image: imageUrl
   };
+  */
+
+  //returns user data
+  return {
+    id: profile.id,
+    displayName: profile.displayName
+    //TODO email
+  }
 }
 
 // Configure the Google strategy for use by Passport.js.
-//
+// Passport's strategies are supplied via use() function.
 // OAuth 2-based strategies require a `verify` function which receives the
 // credential (`accessToken`) for accessing the Google API on the user's behalf,
 // along with the user's profile. The function must invoke `cb` with a user
@@ -43,27 +45,34 @@ passport.use(new GoogleStrategy({
   clientSecret: config.get('OAUTH2_CLIENT_SECRET'),
   callbackURL: config.get('OAUTH2_CALLBACK'),
   accessType: 'offline'
-}, (accessToken, refreshToken, profile, cb) => {
+}, (accessToken, refreshToken, profile, done) => {
   if(profile._json.domain==='studenti.unitn.it' || profile._json.domain==='unitn.it'){
     console.log('account università');
-    cb(null, extractProfile(profile));
+    //done function
+    //  err = null
+    //  user = extractProfile
+    done(null, extractProfile(profile));
   }
   else {
     console.log('account NON università');
-    cb(null, false, { message: 'Accesso non consentito.' });
+    //done function
+    //  err = null
+    //  user = false (not auth)
+    //  message
+    done(null, false, { message: 'Accesso non consentito.' });
   }
-
 }));
 
-passport.serializeUser((user, cb) => {
-  cb(null, user);
+//saving to session
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
+
+//retrieving from session
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
 });
 // [END setup]
-
-const router = express.Router();
 
 // [START middleware]
 // Middleware that requires the user to be logged in. If the user is not logged
@@ -118,11 +127,14 @@ router.get(
   '/auth/google/callback',
 
   // Finish OAuth 2 flow using Passport.js
-  passport.authenticate('google'),
+  // Redirect back to login page
+  passport.authenticate('google', {faliureRedirect: '/auth/login'}),
 
   // Redirect back to the original page, if any
   (req, res) => {
+    //redirects to original url if any
     const redirect = req.session.oauth2return || '/';
+    //deletes the riginal url from session
     delete req.session.oauth2return;
     res.redirect(redirect);
   }
@@ -137,8 +149,6 @@ router.get('/auth/logout', (req, res) => {
 });
 
 module.exports = {
-  extractProfile: extractProfile,
   router: router,
-  required: authRequired,
-  template: addTemplateVariables
-};
+  required: authRequired
+}

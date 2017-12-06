@@ -77,6 +77,4 @@ function insertIssue(req, res, type) {
   }
 }
 
-
-
 module.exports = router;

@@ -4,31 +4,37 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var index = require('./routes/index');
-var issues = require('./routes/issues');
-var nconf = require('nconf');
+
+//DATABASE
+const mongoose = require('mongoose');
+//CONFIGURATION FILE
+const config = require('./config/config.js');
+
+/* ================ AUTHENTICATION ================ */
 const session = require('express-session');
-const MemcachedStore = require('connect-memcached')(session);
 const passport = require('passport');
-const config = require('./config');
-var auth = require('./routes/auth');
+/* ================================================ */
+
+/* ================ ROUTES ================ */
+const index = require('./routes/index');
+const issues = require('./routes/issues');
+const auth = require('./routes/auth');
+/* ======================================== */
 
 //stting up app's root
 var app = express();
 
-//loading config file into nconf
-nconf.file('./config/config.json');
-
+/* =============================== DATABASE ============================== */
 //instancing db connection
 mongoose.Promise = global.Promise;
 //connecting to db
-var db_options = nconf.get('db_options');
-var db_path = nconf.get('db_path');
+var db_options = config.get('MONGO_OPTIONS');
+var db_path = config.get('MONGO_URL');
 mongoose.connect(db_path, db_options).then(
     () => { console.log('DB connected successfully!'); },
     err => { console.error(`Error while connecting to DB: ${err.message}`); }
 );
+/* ======================================================================== */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,32 +50,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // [START session]
 // Configure the session and session storage.
-const sessionConfig = {
+app.use(session({
   resave: false,
   saveUninitialized: false,
-  secret: config.get('SECRET'),
+  secret: config.get('SESSION_SECRET'),
   signed: true
-};
-
-// In production use the App Engine Memcache instance to store session data,
-// otherwise fallback to the default MemoryStore in development.
-if (config.get('NODE_ENV') === 'production' && config.get('MEMCACHE_URL')) {
-  sessionConfig.store = new MemcachedStore({
-    hosts: [config.get('MEMCACHE_URL')]
-  });
-}
-
-app.use(session(sessionConfig));
+}));
 // [END session]
-
 
 // OAuth2
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(auth.router);
+
 
 //routes
-app.use('/', index);
+app.use(auth.router); //authorization router
+app.use('/', auth.required, index);
 app.use('/issues', issues);
 
 // catch 404 and forward to error handler
@@ -78,8 +74,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-
 
 // error handler
 app.use(function(err, req, res, next) {
