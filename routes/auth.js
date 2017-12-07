@@ -46,20 +46,21 @@ passport.use(new GoogleStrategy({
   callbackURL: config.get('OAUTH2_CALLBACK'),
   accessType: 'offline'
 }, (accessToken, refreshToken, profile, done) => {
-  if(profile._json.domain==='studenti.unitn.it' || profile._json.domain==='unitn.it'){
-    console.log('account università');
+  if(profile._json.domain === 'studenti.unitn.it' || profile._json.domain === 'unitn.it'){
+    //checks if user exixst, otherwise it will be created
+    //User.find();
     //done function
     //  err = null
     //  user = extractProfile
     done(null, extractProfile(profile));
   }
   else {
-    console.log('account NON università');
     //done function
     //  err = null
     //  user = false (not auth)
     //  message
-    done(null, false, { message: 'Accesso non consentito.' });
+    done(null, false);
+    //done(new Error('Facebook account already registered/linked.'), false);
   }
 }));
 
@@ -116,7 +117,11 @@ router.get(
   },
 
   // Start OAuth 2 flow using Passport.js
-  passport.authenticate('google', { scope: ['email', 'profile'] })
+  passport.authenticate('google', {
+    scope: ['email', 'profile'],
+    prompt: 'select_account'
+    //hd: ['unitn.it', 'studenti.unitn.it']
+  })
 );
 // [END authorize]
 
@@ -127,8 +132,9 @@ router.get(
   '/auth/google/callback',
 
   // Finish OAuth 2 flow using Passport.js
-  // Redirect back to login page
-  passport.authenticate('google', {faliureRedirect: '/auth/login'}),
+  passport.authenticate('google', {
+    failureRedirect: '/auth/logout'
+  }),
 
   // Redirect back to the original page, if any
   (req, res) => {

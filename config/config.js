@@ -5,7 +5,7 @@ const nconf = module.exports = require('nconf');
 const path = require('path');
 
 nconf
-  //Config file
+  //config file
   .file({ file: path.join(__dirname, 'config.json') });
 
 function checkConfig (setting) {

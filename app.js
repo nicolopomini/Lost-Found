@@ -62,10 +62,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 //routes
 app.use(auth.router); //authorization router
-app.use('/', auth.required, index);
+app.use('/', index);
 app.use('/issues', issues);
 
 // catch 404 and forward to error handler
