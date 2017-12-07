@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const User = require('./user');
 const Tag = require('./issue.tag');
+const config = require('../config/config.js');
 
 var IssueSchema = new Schema({
   //document property: SchemaType
@@ -32,11 +33,7 @@ IssueSchema.methods.watson = function(next) {
   var NaturalLanguageProcessor = require('watson-developer-cloud/natural-language-understanding/v1.js');
 
   //setting up the connection to Watson API
-  var nlp = new NaturalLanguageProcessor({
-    'username': '080d9d59-c184-4cde-8361-8a9deb04e2a1',
-    'password': 'b0JW03HO1qYW',
-    'version_date': '2017-02-27'
-  });
+  var nlp = new NaturalLanguageProcessor(config.get('WATSON_OPTIONS'));
 
   //defining object params
   var params = {
