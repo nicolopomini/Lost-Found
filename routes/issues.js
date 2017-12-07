@@ -9,19 +9,7 @@ var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
 var matching = require('../models/issue.matching');
-/*
-//to delete
-router.get('/', (req, res) => {
-  var user = new User();
-  user.email = 'bla@unitn.it';
-  user.name = 'Bla bla';
-  console.log(user);
-  user.save((err) => {
-    if (err) { res.send(err); }
-    res.json(user);
-  });
-});
-*/
+
 //Matching the given issue with all the other issues
 //return: issues in json
 router.get('/:issueid', function(req, res) {
@@ -106,7 +94,9 @@ function matchIssue(req, res) {
     Issue.find({
       type: opposit_type,
       inserted: {$gt: limit}
-    }, (err, issues) => {
+    }).
+    populate('author').
+    exec ((err, issues) => {
       //issues: array di issue del db
       //issue: singola issue da matchare
       if(err) {
@@ -135,7 +125,6 @@ function handleRequest(req, res, type) {
     token = req.query.token;
   else
     token = req.body.token;
-  console.log(token);
   if(!token) {
     handleError(res, "User token is required");
     return;
@@ -147,10 +136,7 @@ function handleRequest(req, res, type) {
       resolve(user);
     });
   });
-  promise.then((val) => { //val = user
-    console.log(val);
-    //res.send("OK");
-    
+  promise.then((val) => { //val = user    
     if(type == 'match')
       matchIssue(req, res);
     else if(type == 'searching')
