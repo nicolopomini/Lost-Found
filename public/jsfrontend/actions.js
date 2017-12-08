@@ -51,7 +51,6 @@ function formHandler(type) {
 		toSend = toSend.concat('&room=' + room);
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
-		console.log("Prima call");
 		if (this.readyState == 4 && this.status == 200) {
 			//reset forms
 			document.getElementById('lost-form').reset();
@@ -61,11 +60,10 @@ function formHandler(type) {
 				var matchingurl = 'issues/' + response.issue + '?token=' + user._id;
 				var matchrequest = new XMLHttpRequest();
 				matchrequest.onreadystatechange = function() {
-					console.log("Seconda call");
 					if (this.readyState == 4 && this.status == 200) {
 						var secondresponse = JSON.parse(this.responseText);
 						console.log(secondresponse);
-						if(secondresponse.error == false) { //nessun errore
+						if(secondresponse.error == 'false') { //nessun errore
 							console.log(secondresponse.issues);	//array di issues
 						}
 						else
