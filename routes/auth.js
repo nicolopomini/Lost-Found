@@ -64,7 +64,7 @@ passport.use(new GoogleStrategy({
         });
 
         //checking if user params are validate
-        if(!user.validateSync()) {
+        if(user.validateSync()) {
           done(new Error('Parametri utente non validi!'), false);
         }
         else {
