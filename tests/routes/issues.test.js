@@ -8,12 +8,12 @@ const app = require('../../app.js');
 const Issue = require('../../models/issue.js');
 
 const without_token = {
-  descrizione: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
+  description: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
 };
 
 const with_token = {
   token: '5a280a822724c45be22aeedb',
-  descrizione: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
+  description: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
 };
 
 /*

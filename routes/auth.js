@@ -47,6 +47,7 @@ passport.use(new GoogleStrategy({
     //checks if user exixst, otherwise it will be created
     var extracted = extractProfile(profile);
     User.findOne({email: extracted.email}, (err, found) => {
+
       //handling db error
       if (err) {
         done(err, false, {message: 'DB error while checking users!'});
