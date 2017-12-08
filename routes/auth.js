@@ -45,7 +45,7 @@ passport.use(new GoogleStrategy({
 }, (accessToken, refreshToken, profile, done) => {
   if(profile._json.domain === 'studenti.unitn.it' || profile._json.domain === 'unitn.it'){
     //checks if user exixst, otherwise it will be created
-    let extracted = extractProfile(profile);
+    var extracted = extractProfile(profile);
     User.findOne({email: extracted.email}, (err, found) => {
       //handling db error
       if (err) {
@@ -58,7 +58,7 @@ passport.use(new GoogleStrategy({
       //no profile found: the user must be registered into the DB
       else {
         //creating new User based on the extracted params
-        let user = new User({
+        var user = new User({
           name: extracted.name,
           email: extracted.email
         });
