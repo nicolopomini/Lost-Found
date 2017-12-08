@@ -69,7 +69,7 @@ function insertIssue(req, res, type, user) {
       }
       //watson's error
       else {
-        handleError(res, "Error during issue parsing.");
+        handleError(res, "I don't undestand clearly, can you please be more precise?");
       }
     });
   } else {
@@ -106,7 +106,7 @@ function matchIssue(req, res) {
         return;
       }
       var rtr = {};
-      rtr.error = "false";
+      rtr.error = false;
       rtr.issues = matching.match(issue,issues);
       res.json(rtr);
     });
@@ -127,18 +127,43 @@ function handleRequest(req, res, type) {
     token = req.query.token;
   else
     token = req.body.token;
+  console.log("Token: " + token);
   if(!token) {
     handleError(res, "User token is required");
     return;
   }
+  User.findById(token, (err, user) => {
+    if(err)
+      handleError(res, "Error with db");
+    else if(user) {
+      console.log(user);
+      if(type == 'match')
+        matchIssue(req, res);
+      else if(type == 'searching')
+        insertIssue(req, res, 'searching', user);
+      else
+        insertIssue(req, res, 'found', user);
+    }
+    else
+      handleError("User not valid");
+  });
+  /*
   var promise = new Promise((resolve, reject) => {
     User.findById(token, (err,user) => {
+      console.log(err);
+      console.log(user);
       if(err)
         reject(err);
-      resolve(user);
+      else if(user)
+        resolve(user);
+      else {
+        console.log("!user");
+        reject(user);
+      }
     });
   });
   promise.then((val) => { //val = user
+    console.log("then");
     if(type == 'match')
       matchIssue(req, res);
     else if(type == 'searching')
@@ -147,8 +172,10 @@ function handleRequest(req, res, type) {
       insertIssue(req, res, 'found', val);
   })
   .catch((reason) => {
+    console.log("catch");
     handleError(res, "User not valid");
   });
+  */
 }
 
 module.exports = router;
