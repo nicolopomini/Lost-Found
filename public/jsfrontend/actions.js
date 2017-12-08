@@ -1,4 +1,4 @@
-var user = null;
+/*var user = null;
 //id, displayName, email
 document.getElementById('loginbtn').setAttribute('href', 'auth/login');;
 var sessionrequest = new XMLHttpRequest();
@@ -11,7 +11,7 @@ sessionrequest.onreadystatechange = function() {
 		else
 			user = null;
 		document.getElementById('loginbtn').setAttribute('href', logged ? 'auth/logout' : 'auth/login');
-		
+
 	}
 };
 sessionrequest.open('POST','session',false);
@@ -80,4 +80,30 @@ function formHandler(type) {
 	request.open('POST', url, true);
 	request.setRequestHeader("Content-Type", "application/json");
 	request.send(JSON.stringify(toSend));
+}*/
+
+function emptyForm($form) {
+	$form.find('input:not([name=token])').each(function(){
+		$(this).val('');
+	});
+}
+
+//handles server request
+function formHandler(ref, api) {
+	//binding event trigger
+	var $this = $(ref);
+	//retrieving form params
+	var params = $this.closest('form').serializeArray();
+	$.post('/issues/' + api, params)
+		.done(function(res){
+			if (!res.error) {
+				var token = params[0].value;
+				//sending all params even if i need only token
+				$.get('/issues/' + res.issue)
+					.done(function(res) {
+						//refresh the form
+						emptyForm($this);
+					});
+			}
+		});
 }

@@ -10,8 +10,9 @@ block content
 			div.myform#form-lost
 				div.row
 					form.col.s12#lost-form
+						input(name="token",type="hidden",value!=token)
 						div.input-field.col.s6
-							select(name="aula")#lost-room
+							select(name="room")#lost-room
 								optgroup(label="polo A")
 									option(value="A105") A105
 									option(value="A103") A103
@@ -20,13 +21,13 @@ block content
 									option(value="B105") b105
 							label Aula
 						div.input-field.col.s6
-							input.datepicker(type="text",name="data")#lost-time
+							input.datepicker(type="text",name="time")#lost-time
 							label Data di smarrimento
 						div.input-field.col.s9
-							input(type="text",name="testo")#lost-description
+							input(type="text",name="description")#lost-description
 							label Descrizione
 						div.col.s3.submitter
-							button.btn.wawes-effect.waves-light.centered-button(type="button",name="lost_submit", onclick="formHandler('lost')") search
+							button.btn.wawes-effect.waves-light.centered-button(type="button",onclick="formHandler(this, 'search')") search
 								i.material-icons.right search
 	div#line
 		h1#and &
@@ -36,8 +37,9 @@ block content
 			div.myform#form-found
 				div.row
 					form.col.s12#found-form
+						input(name="token",type="hidden",value!=token)
 						div.input-field.col.s6
-							select(name="aula")#found-room
+							select(name="room")#found-room
 								optgroup(label="polo A")
 									option(value="A105") A105
 									option(value="A103") A103
@@ -46,11 +48,11 @@ block content
 									option(value="B105") b105
 							label Aula
 						div.input-field.col.s6
-							input.datepicker(type="text",name="data")#found-time
+							input.datepicker(type="text",name="time")#found-time
 							label Data di smarrimento
 						div.input-field.col.s12
-							textarea.materialize-textarea(type="text",name="descrizione")#found-description
+							textarea.materialize-textarea(type="text",name="descriprion")#found-description
 							label Descrizione
 						div.col.s12.center-align
-							button.btn.wawes-effect.waves-light(type="button",name="found_submit",onclick="formHandler('found')" ) submit
+							button.btn.wawes-effect.waves-light(type="button",onclick="formHandler(this, 'found')" ) submit
 								i.material-icons.right send
