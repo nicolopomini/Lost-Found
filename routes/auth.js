@@ -8,28 +8,25 @@ const router = express.Router();
 //loading config file
 const config = require('../config/config.js');
 
+//loading User Schema
+const User = require('../models/user.js');
+
 //passport + strategy setup
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 function extractProfile (profile) {
   /*
-  let imageUrl = '';
-  if (profile.photos && profile.photos.length) {
-    imageUrl = profile.photos[0].value;
-  }
-  return {
-    id: profile.id,
-    displayName: profile.displayName,
-    image: imageUrl
-  };
+  //debug
+  console.log('Extracted profile');
+  console.log(profile);
   */
 
-  //returns user data
+  //returns new User based on the extracted profile
   return {
-    id: profile.id,
-    displayName: profile.displayName
-    //TODO email
+    //id: profile.id,
+    name: profile.displayName,
+    email: profile.emails[0].value
   }
 }
 
@@ -48,11 +45,42 @@ passport.use(new GoogleStrategy({
 }, (accessToken, refreshToken, profile, done) => {
   if(profile._json.domain === 'studenti.unitn.it' || profile._json.domain === 'unitn.it'){
     //checks if user exixst, otherwise it will be created
-    //User.find();
+    let extracted = extractProfile(profile);
+    User.findOne({email: extracted.email}, (err, found) => {
+      //handling db error
+      if (err) {
+        done(err, false, {message: 'DB error while checking users!'});
+      }
+      //profile already registered
+      else if (found) {
+        done(null, found);
+      }
+      //no profile found: the user must be registered into the DB
+      else {
+        //creating new User based on the extracted params
+        let user = new User({
+          name: extracted.name,
+          email: extracted.email
+        });
+
+        //checking if user params are validate
+        if(!user.validateSync()) {
+          done(new Error('Parametri utente non validi!'), false);
+        }
+        else {
+          //saving new user
+          user.save((err) => {
+            if (err) done(err, false); //throws error
+            else done(null, user); //loads new user into session
+          });
+        }
+      }
+    });
+
     //done function
     //  err = null
     //  user = extractProfile
-    done(null, extractProfile(profile));
+    //done(null, extractProfile(profile));
   }
   else {
     //done function
@@ -66,12 +94,12 @@ passport.use(new GoogleStrategy({
 
 //saving to session
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, user.toObject());
 });
 
 //retrieving from session
 passport.deserializeUser((obj, done) => {
-  done(null, obj);
+  done(null, new User(obj));
 });
 // [END setup]
 
