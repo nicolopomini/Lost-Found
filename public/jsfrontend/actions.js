@@ -87,8 +87,9 @@ function formHandler(type) {
 }*/
 
 function emptyForm($form) {
-	$form.find('input:not([name=token])').each(function(){
-		$(this).val('');
+	$form.find('input').each(function(i){
+		console.log($(this));
+		//$(this).val('').change();
 	});
 }
 
@@ -103,10 +104,13 @@ function formHandler(ref, api) {
 			if (!res.error) {
 				var token = params[0].value;
 				//sending all params even if i need only token
-				$.get('/issues/' + res.issue)
+				$.get('/issues/' + res.issue, [{name: 'token', value: token}])
 					.done(function(res) {
-						//refresh the form
-						emptyForm($this);
+						if(!res.error) {
+							//refresh the form
+							emptyForm($this);
+							//TODO: fill the result table
+						}
 					});
 			}
 		});

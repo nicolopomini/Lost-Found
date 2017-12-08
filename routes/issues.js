@@ -106,7 +106,7 @@ function matchIssue(req, res) {
         return;
       }
       var rtr = {};
-      rtr.error = "false";
+      rtr.error = false;
       rtr.issues = matching.match(issue,issues);
       res.json(rtr);
     });
