@@ -73,7 +73,7 @@ passport.use(new GoogleStrategy({
           console.log(user);
 
           //saving new user
-          user.save((err) => {
+          user.save((err, user) => {
             if (err) done(err, false); //throws error
             else done(null, user); //loads new user into session
           });
