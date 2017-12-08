@@ -135,7 +135,10 @@ function handleRequest(req, res, type) {
     User.findById(token, (err,user) => {
       if(err)
         reject(err);
-      resolve(user);
+      else if(!user)
+        reject(user);
+      else
+        resolve(user);
     });
   });
   promise.then((val) => { //val = user

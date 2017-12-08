@@ -19,6 +19,7 @@ const passport = require('passport');
 const index = require('./routes/index');
 const issues = require('./routes/issues');
 const auth = require('./routes/auth');
+const sess = require('./routes/session');
 /* ======================================== */
 
 //stting up app's root
@@ -66,6 +67,7 @@ app.use(passport.session());
 app.use(auth.router); //authorization router
 app.use('/', index);
 app.use('/issues', issues);
+app.use('/session',sess);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
