@@ -32,10 +32,12 @@ router.post('/found', function(req, res) {
 //elaborates the issue trough watson
 //inserts the issue
 function insertIssue(req, res, type, user) {
-  var issue = new Issue();
+  var issue = new Issue(req.body);
+  /*
   issue.description = req.body.descrizione;
   issue.room = req.body.aula;
   issue.time = req.body.data;
+  */
   issue.author = user._id;
   issue.type = type;
 
@@ -136,7 +138,7 @@ function handleRequest(req, res, type) {
       resolve(user);
     });
   });
-  promise.then((val) => { //val = user    
+  promise.then((val) => { //val = user
     if(type == 'match')
       matchIssue(req, res);
     else if(type == 'searching')

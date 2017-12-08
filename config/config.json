@@ -1,10 +1,10 @@
 {
   "MONGO_OPTIONS": {
-    "useMongoClient": true,
+  "useMongoClient": true,
     "user": "se2",
     "pass": "qwerty"
   },
-  "_MONGO_OPTIONS": {
+  "_ MONGO_OPTIONS": {
     "useMongoClient": true,
     "user": "",
     "pass": ""
