@@ -9,7 +9,7 @@ block content
 			h1.text-holder#h1lost LOST
 			div.myform#form-lost
 				div.row
-					form.col.s12
+					form.col.s12(method="POST", action="", target="")
 						div.input-field.col.s6
 							select(name="aula")
 								optgroup(label="polo A")
@@ -26,7 +26,7 @@ block content
 							input(type="text",name="testo")
 							label Descrizione
 						div.col.s3.submitter
-							button.btn.wawes-effect.waves-light.centered-button(type="submit",name="action") search
+							button.btn.wawes-effect.waves-light.centered-button(type="submit",name="lost_submit") search
 								i.material-icons.right search
 	div#line
 		h1#and &
@@ -35,7 +35,7 @@ block content
 			h1.text-holder#h1found FOUND
 			div.myform#form-found
 				div.row
-					form.col.s12
+					form.col.s12(method="POST", action="", target="")
 						div.input-field.col.s6
 							select(name="aula")
 								optgroup(label="polo A")
@@ -49,15 +49,8 @@ block content
 							input.datepicker(type="text",name="data")
 							label Data di smarrimento
 						div.input-field.col.s12
-							textarea.materialize-textarea(type="text",name="testo")
+							textarea.materialize-textarea(type="text",name="descrizione")
 							label Descrizione
-						//div.col.s8
-							//div.file-field.input-field
-								//div.btn
-									//span upload photo
-									//input(type="file")
-								//div.file-path-wrapper
-									//input.file-path.validate(type="text")
 						div.col.s12.center-align
-							button.btn.wawes-effect.waves-light(type="submit",name="action") submit
+							button.btn.wawes-effect.waves-light(type="submit",name="found_submit") submit
 								i.material-icons.right send
