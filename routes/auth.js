@@ -64,10 +64,14 @@ passport.use(new GoogleStrategy({
         });
 
         //checking if user params are validate
-        if(typeof user.validateSync() != 'undefined') {
+        if(!(user.validateSync() == undefined)) {
           done(new Error('Parametri utente non validi!'), false);
         }
         else {
+          //debug
+          console.log('Insert new user:');
+          console.log(user);
+
           //saving new user
           user.save((err) => {
             if (err) done(err, false); //throws error
