@@ -69,7 +69,7 @@ function insertIssue(req, res, type, user) {
       }
       //watson's error
       else {
-        handleError(res, "Error during issue parsing.");
+        handleError(res, "I don't undestand clearly, can you please be more precise?");
       }
     });
   } else {
