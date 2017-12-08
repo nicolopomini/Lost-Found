@@ -4,26 +4,37 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var index = require('./routes/index');
-var issues = require('./routes/issues');
 
+//DATABASE
+const mongoose = require('mongoose');
+//CONFIGURATION FILE
+const config = require('./config/config.js');
+
+/* ================ AUTHENTICATION ================ */
+const session = require('express-session');
+const passport = require('passport');
+/* ================================================ */
+
+/* ================ ROUTES ================ */
+const index = require('./routes/index');
+const issues = require('./routes/issues');
+const auth = require('./routes/auth');
+/* ======================================== */
+
+//stting up app's root
 var app = express();
 
+/* =============================== DATABASE ============================== */
 //instancing db connection
 mongoose.Promise = global.Promise;
-/*
-//defining db
-var db_user = 'se2';
-var db_password = 'qwerty';
-var db_string = 'mongodb://' + db_user + ':' + db_password + '@ds157185.mlab.com:57185/lostfound';
-*/
-var db_string = 'mongodb://localhost/lostnfound';
 //connecting to db
-mongoose.connect(db_string/*, db_options*/).then(
+var db_options = config.get('MONGO_OPTIONS');
+var db_path = config.get('MONGO_URL');
+mongoose.connect(db_path, db_options).then(
     () => { console.log('DB connected successfully!'); },
     err => { console.error(`Error while connecting to DB: ${err.message}`); }
 );
+/* ======================================================================== */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,6 +48,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// [START session]
+// Configure the session and session storage.
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: config.get('SESSION_SECRET'),
+  signed: true
+}));
+// [END session]
+
+// OAuth2
+app.use(passport.initialize());
+app.use(passport.session());
+
+//routes
+app.use(auth.router); //authorization router
 app.use('/', index);
 app.use('/issues', issues);
 
