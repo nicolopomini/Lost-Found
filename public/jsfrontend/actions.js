@@ -40,34 +40,40 @@ function formHandler(type) {
 		alert("Error");
 		return;
 	}
-	var toSend = {};
 	if(description == '' || description == null) {
 		alert("Error, description needed");
 		return;
 	}
+	var toSend = 'token=' + user._id + '&description=' + description;
 	if(time != '' && time != null)
-		toSend.time = time;
+		toSend = toSend.concat('&time=' + time);
 	if(room != '' && room != null)
-		toSend.room = room;
-	toSend.description = description;
-	toSend.token = user._id;
-	console.log(toSend);
+		toSend = toSend.concat('&room=' + room);
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
+		console.log("Prima call");
 		if (this.readyState == 4 && this.status == 200) {
 			//reset forms
 			document.getElementById('lost-form').reset();
 			document.getElementById('found-form').reset();
 			var response = JSON.parse(this.responseText);
 			if(response.error == false) {	//nessun errore
-				var url = 'issues/'.concat(response.issue); //issueid
+				var matchingurl = 'issues/' + response.issue + '?token=' + user._id;
 				var matchrequest = new XMLHttpRequest();
 				matchrequest.onreadystatechange = function() {
-					//Gestire i dati di ritorno
-					alert(JSON.stringify(this.responseText));
-				};
-				matchrequest.open('GET', url, true);
-				matchrequest.send('token=' + user._id);
+					console.log("Seconda call");
+					if (this.readyState == 4 && this.status == 200) {
+						var secondresponse = JSON.parse(this.responseText);
+						console.log(secondresponse);
+						if(secondresponse.error == false) { //nessun errore
+							console.log(secondresponse.issues);	//array di issues
+						}
+						else
+							alert(secondresponse.error);
+					}
+				}
+				matchrequest.open('GET', matchingurl, true);
+				matchrequest.send();
 			} else
 				alert(response.error);
 		}
@@ -78,6 +84,6 @@ function formHandler(type) {
 	else
 		url = url.concat('found');
 	request.open('POST', url, true);
-	request.setRequestHeader("Content-Type", "application/json");
-	request.send(JSON.stringify(toSend));
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.send(toSend);
 }
