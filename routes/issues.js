@@ -87,7 +87,11 @@ function matchIssue(req, res) {
   }
   Issue.findById(id, (err, issue) => {
     if(err) {
-      handleError(res, "Required issue does not exist.");
+      handleError(res, "Error with db");
+      return;
+    }
+    if(!issue) {
+      handleError(res, "This issue does not exist.");
       return;
     }
     var limit = new Date(); //today
@@ -127,7 +131,6 @@ function handleRequest(req, res, type) {
     token = req.query.token;
   else
     token = req.body.token;
-  console.log("Token: " + token);
   if(!token) {
     handleError(res, "User token is required");
     return;
@@ -136,7 +139,6 @@ function handleRequest(req, res, type) {
     if(err)
       handleError(res, "Error with db");
     else if(user) {
-      console.log(user);
       if(type == 'match')
         matchIssue(req, res);
       else if(type == 'searching')
@@ -147,35 +149,6 @@ function handleRequest(req, res, type) {
     else
       handleError("User not valid");
   });
-  /*
-  var promise = new Promise((resolve, reject) => {
-    User.findById(token, (err,user) => {
-      console.log(err);
-      console.log(user);
-      if(err)
-        reject(err);
-      else if(user)
-        resolve(user);
-      else {
-        console.log("!user");
-        reject(user);
-      }
-    });
-  });
-  promise.then((val) => { //val = user
-    console.log("then");
-    if(type == 'match')
-      matchIssue(req, res);
-    else if(type == 'searching')
-      insertIssue(req, res, 'searching');
-    else
-      insertIssue(req, res, 'found', val);
-  })
-  .catch((reason) => {
-    console.log("catch");
-    handleError(res, "User not valid");
-  });
-  */
 }
 
 module.exports = router;

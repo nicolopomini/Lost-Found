@@ -11,7 +11,7 @@ exports.parseTag = function(tagToParse) {
   return {
     original: tagToParse.text, //setting original to retrieved keyword's text
     parsed: parseTagText(tagToParse.text), //parsing original text
-    relevance: tagToParse.relevance //setting relevance to retrieved relevance
+    relevance: parseFloat(tagToParse.relevance.toFixed(2)) //setting relevance to retrieved relevance, rounded to 2 decimals
   }
 }
 

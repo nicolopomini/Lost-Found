@@ -20,11 +20,6 @@ var IssueSchema = new Schema({
   type: {type: String, enum: ['searching','found'], required: true} //searching or found?
 });
 
-//method used to sort tags internally to an Issue istance
-IssueSchema.methods.sortTags = function(t1,t2) {
-	return t1.parsed.localeCompare(t2.parsed);
-}
-
 //using IBM watson to evaluate the sentence
 IssueSchema.methods.watson = function(next) {
   var self = this;
@@ -46,13 +41,6 @@ IssueSchema.methods.watson = function(next) {
       }
     }
   }
-
-  /*
-  //DEBUG
-  console.log('Parameters to be sent:')
-  console.log(params);
-  */
-
   //executing analisys through Watson Natural Language Processor
   nlp.analyze(params, next);
 }
@@ -68,24 +56,6 @@ IssueSchema.methods.addTags = function(keywords) {
 //sorting tags by parsed text
 IssueSchema.methods.sortTags = function() {
   this.tags.sort(Tag.sortTagByParsed);
-}
-
-//searching for issues wich are suitable for matching
-//resurns a promise (?)
-IssueSchema.query.searchSuitable = function() {
-  //using 'self' to bind the scope of 'this' inside the query
-  var self = this;
-  var opposit_type = self.type == 'searching' ? 'found' : 'searching';
-  //returning the issues if:
-  //max 30 days delay from today
-  var limit = new Date(); //today
-  limit.setDate(limit.getDate() - 30); //today - 30 days
-  return this.find({
-    inserted: {$gt: limit},
-    type: opposit_type
-  }).sort({
-    inserted: 'desc'
-  });
 }
 
 //exporting Issue object
