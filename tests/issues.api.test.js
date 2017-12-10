@@ -3,9 +3,9 @@
 //requiring supertest to test app
 const request = require('supertest');
 //requiring app to test
-const app = require('../../app.js');
+const app = require('../app.js');
 //requiring Issue schema
-const Issue = require('../../models/issue.js');
+const Issue = require('../models/issue.js');
 
 const without_token = {
   descrizione: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
