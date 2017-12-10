@@ -5,14 +5,15 @@ HOST: https://nicolopomini-lostfound.herokuapp.com/
 
 API per segnalare un oggetto che hai smarrito o che hai ritrovato
 
-## Segnalare un oggetto smarrito [/issues/search{?descrizione,aula,data}]
+## Segnalare un oggetto smarrito [/issues/search{?token,description,room,time}]
 
 ### Segnala oggetto smarrito [POST]
 
 + Parameters
-    + descrizione - Descrizione testuale dell'oggetto trovato
-    + aula (optional) - Aula in cui l'oggetto è stato trovato
-    + data (optional) - Data nella quale l'oggetto è stato trovato
+    + token - ID dell'utente che utilizza il servizio
+    + description - Descrizione testuale dell'oggetto trovato
+    + room (optional) - Aula in cui l'oggetto è stato trovato
+    + time (optional) - Data nella quale l'oggetto è stato trovato
 
 + Response 200 (application/json)
 
@@ -21,14 +22,22 @@ API per segnalare un oggetto che hai smarrito o che hai ritrovato
             "issue" : "507f1f77bcf86cd799439011"
         }
 
-## Segnalare un oggetto trovato [/issues/found{?descrizione,aula,data}]
++ Response 200 (application/json)
+
+        {
+            "error" : "Parametri non validi.",
+            "issue" : null
+        }
+
+## Segnalare un oggetto trovato [/issues/found{?token,description,room,time}]
 
 ### Segnala oggetto trovato [POST]
 
 + Parameters
-    + descrizione - Descrizione testuale dell'oggetto trovato
-    + aula (optional) - Aula in cui l'oggetto è stato trovato
-    + data (optional) - Data nella quale l'oggetto è stato trovato
+    + token - ID dell'utente che utilizza il servizio
+    + description - Descrizione testuale dell'oggetto trovato
+    + room (optional) - Aula in cui l'oggetto è stato trovato
+    + time (optional) - Data nella quale l'oggetto è stato trovato
 
 + Response 200 (application/json)
 
@@ -37,11 +46,19 @@ API per segnalare un oggetto che hai smarrito o che hai ritrovato
             "issue" : "507f1f24bcf86cd593319107"
         }
 
-## Cercare segnalazioni corrispondenti ad una issue [/issues/{issueid}]
++ Response 200 (application/json)
+
+        {
+            "error" : "Parametri non validi.",
+            "issue" : null
+        }
+
+## Cercare segnalazioni corrispondenti ad una issue [/issues/{issueid}{?token}]
 
 ### Cerca issues [GET]
 + Parameters
     + issueid - A valid issue id
+    + token - ID dell'utente che utilizza il servizio
 
 + Response 200 (application/json)
 
@@ -55,8 +72,28 @@ API per segnalare un oggetto che hai smarrito o che hai ritrovato
                     "time" : "2017-11-27",
                     "inserted" : "2017-12-4",
                     "author" : {
-                        "?" : "???"
+                        "id" : "613457248818606593319107",
+                        "name" : "Fausto Giunchiglia",
+                        "email" : "fausto.giunchiglia@unitn.it"
+                    }
+                },
+                {
+                    "description" : "White iPhone X cover and Apple AirPods",
+                    "room" : "",
+                    "time" : "",
+                    "inserted" : "2017-12-4",
+                    "author" : {
+                        "id" : "613457248818606593319107",
+                        "name" : "Fausto Giunchiglia",
+                        "email" : "fausto.giunchiglia@unitn.it"
                     }
                 }
             ]
+        }
+
++ Response 200 (application/json)
+
+        {
+            "error" : "La issue richiesta non esiste.",
+            "issue" : null
         }
