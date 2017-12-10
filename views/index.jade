@@ -2,133 +2,136 @@ extends layout
 
 block content
 	div.fixed-action-btn.userbutton
-		a(href="./auth/login").btn-floating.btn-large.red#loginbtn
+		a(href="./auth/login").btn-floating.btn-larger.btn-large.red
 			i.material-icons.med account_circle
-	div.container#lost
-		div
-			h1.text-holder#h1lost LOST
-			div.myform#form-lost
-				div.row
-					form.col.s12#lost-form
-						input(name="token",type="hidden",value!=token)
-						div.input-field.col.s6
-							select(name="room")#lost-room
-								option(value="") I don't remember
-								optgroup(label="polo A")
-									option(value="bar") Bar
-									option(value="A101") A101
-									option(value="A102") A102
-									option(value="A103") A103
-									option(value="A104") A104
-									option(value="A105") A105
-									option(value="A106") A106
-									option(value="A107") A107
-									option(value="A108") A108
-									option(value="A201") A201
-									option(value="A202") A202
-									option(value="A203") A203
-									option(value="A204") A204
-									option(value="A205") A205
-									option(value="A206") A206
-									option(value="A207") A207
-									option(value="A208") A208
-									option(value="A209") A209
-									option(value="A210") A210
-									option(value="A211") A211
-									option(value="A212") A212
-									option(value="A213") A213
-									option(value="A214") A214
-									option(value="A215") A215
-									option(value="A216") A216
-									option(value="A217") A217
-									option(value="A218") A218
-									option(value="A219") A219
-									option(value="A220") A220
-									option(value="A221") A221
-									option(value="A222") A222
-									option(value="A223") A223
-									option(value="A224") A224
-								optgroup(label="polo B")
-									option(value="Tavoli") Tavoli
-									option(value="B101") B101
-									option(value="B102") B102
-									option(value="B103") B103
-									option(value="B104") B104
-									option(value="B105") B105
-									option(value="B106") B106
-									option(value="B107") B107
-							label Aula
-						div.input-field.col.s6
-							input.datepicker(type="text",name="time")#lost-time
-							label Data di smarrimento
-						div.input-field.col.s9
-							input(type="text",name="description")#lost-description
-							label Descrizione
-						div.col.s3.submitter
-							button.btn.wawes-effect.waves-light.centered-button(type="button",onclick="formHandler(this, 'search')") search
-								i.material-icons.right search
-	div#line
-		h1#and &
-	div.container#found
-		div
-			h1.text-holder#h1found FOUND
-			div.myform#form-found
-				div.row
-					form.col.s12#found-form
-						input(name="token",type="hidden",value!=token)
-						div.input-field.col.s6
-							select(name="room")#found-room
-								option(value="") I don't remember
-								optgroup(label="polo A")
-									option(value="bar") Bar
-									option(value="A101") A101
-									option(value="A102") A102
-									option(value="A103") A103
-									option(value="A104") A104
-									option(value="A105") A105
-									option(value="A106") A106
-									option(value="A107") A107
-									option(value="A108") A108
-									option(value="A201") A201
-									option(value="A202") A202
-									option(value="A203") A203
-									option(value="A204") A204
-									option(value="A205") A205
-									option(value="A206") A206
-									option(value="A207") A207
-									option(value="A208") A208
-									option(value="A209") A209
-									option(value="A210") A210
-									option(value="A211") A211
-									option(value="A212") A212
-									option(value="A213") A213
-									option(value="A214") A214
-									option(value="A215") A215
-									option(value="A216") A216
-									option(value="A217") A217
-									option(value="A218") A218
-									option(value="A219") A219
-									option(value="A220") A220
-									option(value="A221") A221
-									option(value="A222") A222
-									option(value="A223") A223
-									option(value="A224") A224
-								optgroup(label="polo B")
-									option(value="Tavoli") Tavoli
-									option(value="B101") B101
-									option(value="B102") B102
-									option(value="B103") B103
-									option(value="B104") B104
-									option(value="B105") B105
-									option(value="B106") B106
-									option(value="B107") B107
-							label Aula
-						div.input-field.col.s6
-							input.datepicker(type="text",name="time")#found-time
-							label Data di smarrimento
-						div.input-field.col.s12
-							textarea.materialize-textarea(type="text",name="descriprion")#found-description
-							label Descrizione
-						div.col.s12.center-align
-							button.btn.wawes-effect.waves-light(type="button",onclick="formHandler(this, 'found')" ) submit
-								i.material-icons.right send
+	div#full-wrapper
+		div.container#lost
+			div
+				h1.text-holder#h1lost LOST
+				div.myform#form-lost
+					div.row
+						form.col.s12#lost-form
+							input(name="token",type="hidden",value!=token)
+							div.input-field.col.s6
+								select(name="room")#lost-room
+									option(value="") I don't remember
+									optgroup(label="polo A")
+										option(value="bar") Bar
+										option(value="biblioteca") Biblioteca
+										option(value="A101") A101
+										option(value="A102") A102
+										option(value="A103") A103
+										option(value="A104") A104
+										option(value="A105") A105
+										option(value="A106") A106
+										option(value="A107") A107
+										option(value="A108") A108
+										option(value="A201") A201
+										option(value="A202") A202
+										option(value="A203") A203
+										option(value="A204") A204
+										option(value="A205") A205
+										option(value="A206") A206
+										option(value="A207") A207
+										option(value="A208") A208
+										option(value="A209") A209
+										option(value="A210") A210
+										option(value="A211") A211
+										option(value="A212") A212
+										option(value="A213") A213
+										option(value="A214") A214
+										option(value="A215") A215
+										option(value="A216") A216
+										option(value="A217") A217
+										option(value="A218") A218
+										option(value="A219") A219
+										option(value="A220") A220
+										option(value="A221") A221
+										option(value="A222") A222
+										option(value="A223") A223
+										option(value="A224") A224
+									optgroup(label="polo B")
+										option(value="Tavoli") Tavoli
+										option(value="B101") B101
+										option(value="B102") B102
+										option(value="B103") B103
+										option(value="B104") B104
+										option(value="B105") B105
+										option(value="B106") B106
+										option(value="B107") B107
+								label Aula
+							div.input-field.col.s6
+								input.datepicker(type="text",name="time")#lost-time
+								label Data di smarrimento
+							div.input-field.col.s8
+								input(type="text",name="description")#lost-description
+								label Descrizione
+							div.col.s4.submitter.center-align
+								button.btn.wawes-effect.waves-light.centered-button(type="button",onclick="formHandler(this, 'search')") search
+									i.material-icons.right search
+		div#line
+			h1#and &
+		div.container#found
+			div
+				h1.text-holder#h1found FOUND
+				div.myform#form-found
+					div.row
+						form.col.s12#found-form
+							input(name="token",type="hidden",value!=token)
+							div.input-field.col.s6
+								select(name="room")#found-room
+									option(value="") I don't remember
+									optgroup(label="polo A")
+										option(value="bar") Bar
+										option(value="biblioteca") Biblioteca
+										option(value="A101") A101
+										option(value="A102") A102
+										option(value="A103") A103
+										option(value="A104") A104
+										option(value="A105") A105
+										option(value="A106") A106
+										option(value="A107") A107
+										option(value="A108") A108
+										option(value="A201") A201
+										option(value="A202") A202
+										option(value="A203") A203
+										option(value="A204") A204
+										option(value="A205") A205
+										option(value="A206") A206
+										option(value="A207") A207
+										option(value="A208") A208
+										option(value="A209") A209
+										option(value="A210") A210
+										option(value="A211") A211
+										option(value="A212") A212
+										option(value="A213") A213
+										option(value="A214") A214
+										option(value="A215") A215
+										option(value="A216") A216
+										option(value="A217") A217
+										option(value="A218") A218
+										option(value="A219") A219
+										option(value="A220") A220
+										option(value="A221") A221
+										option(value="A222") A222
+										option(value="A223") A223
+										option(value="A224") A224
+									optgroup(label="polo B")
+										option(value="Tavoli") Tavoli
+										option(value="B101") B101
+										option(value="B102") B102
+										option(value="B103") B103
+										option(value="B104") B104
+										option(value="B105") B105
+										option(value="B106") B106
+										option(value="B107") B107
+								label Aula
+							div.input-field.col.s6
+								input.datepicker(type="text",name="time")#found-time
+								label Data di smarrimento
+							div.input-field.col.s12
+								textarea.materialize-textarea(type="text",name="descriprion")#found-description
+								label Descrizione
+							div.col.s12.center-align
+								button.btn.wawes-effect.waves-light(type="button",onclick="formHandler(this, 'found')" ) submit
+									i.material-icons.right send

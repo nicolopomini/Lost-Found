@@ -1,0 +1,49 @@
+.userbutton{
+	top:auto;
+	bottom:40px;
+	right:40px;
+}
+
+.btn-larger {
+    width: 170px !important;
+    height: 170px !important;
+}
+
+i.med {
+	font-size:10rem;
+}
+
+.btn-floating.btn-large i {
+    line-height: 169px;
+}
+
+
+.text-holder {
+	padding:18px 7%;
+	font-size: 8em;
+
+	color:#FFF;
+	margin: 100px 0 50px 0;
+	font-family: 'Abril Fatface', cursive;
+	font-weight: 600;
+}
+
+#h1lost {
+	direction: rtl;
+	transition: all 1s;
+}
+
+#h1found {
+	direction: ltr;
+	transition: all 1s;
+}
+
+#and {
+	font-family: 'Quicksand', sans-serif;
+	position: relative;
+	width: 100px;
+
+	margin: 110px 0;
+	text-align: center;
+	font-size: 9em;
+} 

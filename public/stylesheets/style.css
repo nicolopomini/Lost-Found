@@ -7,6 +7,14 @@ body {
     padding: 0;
 }
 
+#full-wrapper {
+	width: 100%;
+	margin: 0;
+    padding: 0;
+    position: relative;
+	display: flex;
+}
+
 .dropdown-content {
 	max-height: 250px; !important
 	overflow-y: auto;
@@ -82,6 +90,7 @@ i.med {
 
 .userbutton {
 	top: 10px;
+	bottom: auto;
 }
 
 .submitter {
@@ -89,6 +98,3 @@ i.med {
 	padding: 0 2rem !important; 
 }
 
-.centered {
-	margin:0 auto !important;
-}
