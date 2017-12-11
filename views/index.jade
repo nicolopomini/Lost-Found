@@ -69,6 +69,7 @@ block content
 							div.col.s4.submitter.center-align
 								button.btn.wawes-effect.waves-light.centered-button(type="button",onclick="formHandler(this, 'search')") search
 									i.material-icons.right search
+					div.row#response-container-lost
 		div#line
 			h1#and &
 		div.container#found
@@ -128,10 +129,11 @@ block content
 								label Aula
 							div.input-field.col.s6
 								input.datepicker(type="text",name="time")#found-time
-								label Data di smarrimento
+								label Data di ritrovamento
 							div.input-field.col.s12
-								textarea.materialize-textarea(type="text",name="descriprion")#found-description
+								textarea.materialize-textarea(type="text",name="description")#found-description
 								label Descrizione
 							div.col.s12.center-align
 								button.btn.wawes-effect.waves-light(type="button",onclick="formHandler(this, 'found')" ) submit
 									i.material-icons.right send
+					div.row#response-container-found

@@ -82,6 +82,7 @@ body {
 	
 	transition: all 1s;
 	transition-delay: 1s;
+	overflow-y: scroll;
 }
 
 i.med {
@@ -97,4 +98,3 @@ i.med {
 	margin-top: 20px;
 	padding: 0 2rem !important; 
 }
-

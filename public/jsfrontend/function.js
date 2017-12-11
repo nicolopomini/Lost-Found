@@ -6,7 +6,7 @@ var colorBack = "#FFFFFF"; // silver
 var title = $("#h1lost").outerHeight(true)
 
 var usable = $(window).height() - title;
-var viewport_form = usable * 80/100;
+var viewport_form = usable * 90/100;
 
 if (mobile) {
 	console.log("mobile")
