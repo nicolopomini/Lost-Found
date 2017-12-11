@@ -16,7 +16,7 @@ body {
 }
 
 .dropdown-content {
-	max-height: 250px; !important
+	max-height: 250px !important; 
 	overflow-y: auto;
 }
 

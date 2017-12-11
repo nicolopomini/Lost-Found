@@ -4,6 +4,14 @@
 	right:40px;
 }
 
+#mobile-container {
+	position:fixed;
+	bottom:0px;
+	width: 100vw;
+	background-color:blue;
+	transition:all 1s;
+}
+
 .btn-larger {
     width: 170px !important;
     height: 170px !important;
@@ -28,26 +36,10 @@ i.med {
 	font-weight: 600;
 }
 
-#h1lost {
-	direction: rtl;
-	transition: all 1s;
-}
-
-#h1found {
-	direction: ltr;
-	transition: all 1s;
-}
-
-#and {
-	font-family: 'Quicksand', sans-serif;
-	position: relative;
-	width: 100px;
-
-	margin: 110px 0;
-	text-align: center;
-	font-size: 9em;
-} 
-
 #username {
 	visibility: hidden;
+}
+
+#full-wrapper {
+	transition: all 1s;
 }
