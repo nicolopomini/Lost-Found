@@ -2,13 +2,13 @@ body {
 	position: relative;
 	display: flex;
 	width: 100vw;
-    height: 100vh;
     margin: 0;
     padding: 0;
 }
 
 #full-wrapper {
 	width: 100vw;
+	height: 100vh;
 	margin: 0;
     padding: 0;
     position: relative;

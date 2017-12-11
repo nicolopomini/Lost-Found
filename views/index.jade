@@ -1,9 +1,8 @@
 extends layout
 
 block content
-	div.fixed-action-btn.userbutton
-		a(href="./auth/login").btn-floating.btn-larger.btn-large.red
-			i.material-icons.med account_circle
+	div.fixed-action-btn.userbutton#loginbutton
+		input#logincheck(name="name",type="hidden",value!=name)
 	div#full-wrapper
 		div.container#lost
 			div

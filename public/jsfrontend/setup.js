@@ -12,8 +12,6 @@ if (mobile) {
 
 }
 
-
-
 //center the &
 var pos = 50 - $("#line").width()/2
 document.getElementById("and").setAttribute("style","left:".concat(-pos,"px"));
@@ -34,5 +32,14 @@ $('.datepicker').pickadate({
 });
 
 //textarea
-$('#textarea1').val('New Text');
-$('#textarea1').trigger('autoresize');
+$('#textarea').val('New Text');
+$('#textarea').trigger('autoresize');
+
+//setting the button for login
+var check = $('#logincheck').attr("value")
+if (check == undefined) {
+	var str = '<a href="./auth/login" class="btn-floating btn-larger btn-large red"><i class="material-icons med">account_circle</i></a>'
+} else {
+	var str ='<span id="username">Welcome, '+check+'\t</span><a href="./auth/logout" class="btn-floating btn-larger btn-large red"><i class="material-icons med">verified_user</i></a>'
+}
+$('#loginbutton').html(str)

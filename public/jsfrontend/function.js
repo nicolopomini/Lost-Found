@@ -19,7 +19,7 @@ if (mobile) {
 
 	//handle the click on "LOST" and "FOUND" labels
 	$("#h1lost").click(function () {
-		
+		document.getElementById("full-wrapper").setAttribute("style","transition: all 0.5s;height:auto");
 	})
 
 	$("#h1found").click(function () {
@@ -58,4 +58,3 @@ if (mobile) {
 		document.getElementById("lost").setAttribute("style","width:33.8%");
 	})
 }
-
