@@ -4,8 +4,8 @@ var colorBack = "#FFFFFF"; // silver
 
 //container dimensions
 var title = $("#h1lost").outerHeight(true)
-// value is already init as window height.
-var usable = value - title;
+
+var usable = $(window).height() - title;
 var viewport_form = usable * 80/100;
 
 if (mobile) {

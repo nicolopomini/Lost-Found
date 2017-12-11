@@ -12,15 +12,7 @@ if (mobile) {
 
 }
 
-//set the height of the page as the full viewport
-var value = $(window).height();
-var height = "height:";
-height = height.concat(value,"px");
 
-document.getElementById("full-wrapper").setAttribute("style",height);
-document.getElementById("lost").setAttribute("style",height);
-document.getElementById("line").setAttribute("style",height);
-document.getElementById("found").setAttribute("style",height);
 
 //center the &
 var pos = 50 - $("#line").width()/2

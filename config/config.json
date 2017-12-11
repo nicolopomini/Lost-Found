@@ -7,8 +7,8 @@
   "MONGO_URL": "mongodb://ds157185.mlab.com:57185/lostfound",
   "OAUTH2_CLIENT_ID": "1059098531864-877e25bb4njnojsqm3vtq2agbsej4kuh.apps.googleusercontent.com",
   "OAUTH2_CLIENT_SECRET": "mN9AD_oEIjbuAYymOubvGtEO",
-  "OAUTH2_CALLBACK": "https://nicolopomini-lostfound.herokuapp.com/auth/google/callback",
-  "_OAUTH2_CALLBACK": "http://localhost:3000/auth/google/callback",
+  "_OAUTH2_CALLBACK": "https://nicolopomini-lostfound.herokuapp.com/auth/google/callback",
+  "OAUTH2_CALLBACK": "http://localhost:3000/auth/google/callback",
   "WATSON_OPTIONS": {
     "username": "080d9d59-c184-4cde-8361-8a9deb04e2a1",
     "password": "b0JW03HO1qYW",
