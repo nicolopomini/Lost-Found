@@ -2,13 +2,13 @@ body {
 	position: relative;
 	display: flex;
 	width: 100vw;
-    height: 100vh;
     margin: 0;
     padding: 0;
 }
 
 #full-wrapper {
 	width: 100vw;
+	height: 100vh;
 	margin: 0;
     padding: 0;
     position: relative;
@@ -16,7 +16,7 @@ body {
 }
 
 .dropdown-content {
-	max-height: 250px; !important
+	max-height: 250px !important; 
 	overflow-y: auto;
 }
 
@@ -82,6 +82,7 @@ body {
 	
 	transition: all 1s;
 	transition-delay: 1s;
+	overflow-y: scroll;
 }
 
 i.med {
@@ -98,3 +99,8 @@ i.med {
 	padding: 0 2rem !important; 
 }
 
+.hidden {
+	height: 0px;
+	width: 0px;
+	overflow: hidden;
+}

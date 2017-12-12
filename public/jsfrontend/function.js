@@ -6,7 +6,7 @@ var colorBack = "#FFFFFF"; // silver
 var title = $("#h1lost").outerHeight(true)
 
 var usable = $(window).height() - title;
-var viewport_form = usable * 80/100;
+var viewport_form = usable * 90/100;
 
 if (mobile) {
 	console.log("mobile")
@@ -19,11 +19,40 @@ if (mobile) {
 
 	//handle the click on "LOST" and "FOUND" labels
 	$("#h1lost").click(function () {
-		
+		$("#mobile-container").addClass("mobile-opened");
+
+		$("#mobile-lost").addClass("mobilecontainer-opened");
+		$("#mobile-found").addClass("mobilecontainer-closed");
+
+		setTimeout(function () {
+			$("#mobile-found").removeClass("mobilecontainer-closed");
+			$("#mobile-found").removeClass("mobilecontainer-opened");
+		},1000)
+
+		document.getElementById("h1found").removeAttribute("style");
+		document.getElementById("found").removeAttribute("style");	
+
+		document.getElementById("h1lost").setAttribute("style","color:".concat(colorLost));
+		document.getElementById("lost").setAttribute("style","background-color:".concat(colorBack));
+
 	})
 
 	$("#h1found").click(function () {
+		$("#mobile-container").addClass("mobile-opened");
+		
+		$("#mobile-found").addClass("mobilecontainer-opened");
+		$("#mobile-lost").addClass("mobilecontainer-closed");
+		
+		setTimeout(function () {
+			$("#mobile-lost").removeClass("mobilecontainer-closed");
+			$("#mobile-lost").removeClass("mobilecontainer-opened");
+		}, 1000)
 
+		document.getElementById("h1lost").removeAttribute("style");
+		document.getElementById("lost").removeAttribute("style");
+
+		document.getElementById("h1found").setAttribute("style","color:".concat(colorFound));
+		document.getElementById("found").setAttribute("style","background-color:".concat(colorBack));
 	})
 
 } else {
@@ -58,4 +87,3 @@ if (mobile) {
 		document.getElementById("lost").setAttribute("style","width:33.8%");
 	})
 }
-
