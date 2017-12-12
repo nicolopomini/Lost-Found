@@ -19,11 +19,40 @@ if (mobile) {
 
 	//handle the click on "LOST" and "FOUND" labels
 	$("#h1lost").click(function () {
-		document.getElementById("mobile-container").setAttribute("style","height:80vh");
+		$("#mobile-container").addClass("mobile-opened");
+
+		$("#mobile-lost").addClass("mobilecontainer-opened");
+		$("#mobile-found").addClass("mobilecontainer-closed");
+
+		setTimeout(function () {
+			$("#mobile-found").removeClass("mobilecontainer-closed");
+			$("#mobile-found").removeClass("mobilecontainer-opened");
+		},1000)
+
+		document.getElementById("h1found").removeAttribute("style");
+		document.getElementById("found").removeAttribute("style");	
+
+		document.getElementById("h1lost").setAttribute("style","color:".concat(colorLost));
+		document.getElementById("lost").setAttribute("style","background-color:".concat(colorBack));
+
 	})
 
 	$("#h1found").click(function () {
+		$("#mobile-container").addClass("mobile-opened");
+		
+		$("#mobile-found").addClass("mobilecontainer-opened");
+		$("#mobile-lost").addClass("mobilecontainer-closed");
+		
+		setTimeout(function () {
+			$("#mobile-lost").removeClass("mobilecontainer-closed");
+			$("#mobile-lost").removeClass("mobilecontainer-opened");
+		}, 1000)
 
+		document.getElementById("h1lost").removeAttribute("style");
+		document.getElementById("lost").removeAttribute("style");
+
+		document.getElementById("h1found").setAttribute("style","color:".concat(colorFound));
+		document.getElementById("found").setAttribute("style","background-color:".concat(colorBack));
 	})
 
 } else {

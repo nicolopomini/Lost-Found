@@ -9,7 +9,7 @@ window.mobilecheck = function() {
 var mobile = mobilecheck();
 
 if (mobile) {
-
+	$("#mobile-container").removeClass("hidden");
 }
 
 //center the &

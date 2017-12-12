@@ -11,10 +11,18 @@ function formHandler(ref, api) {
 	var $this = $(ref);
 
 	if  (api == 'search')  {
-		place = $("#response-container-lost");
+		if (!mobile) {
+			place = $("#response-container-lost");
+		} else {
+	 		place = $("#response-container-lost-mobile");
+		}
 	}
 	else {
-	 	place = $("#response-container-found");
+		if (!mobile) {
+	 		place = $("#response-container-found");
+		} else {
+	 		place = $("#response-container-found-mobile");
+		}
 	}
 
 	var inner ='<div class="col s6 offset-s3 center-align">Processing..</div>';

@@ -98,3 +98,9 @@ i.med {
 	margin-top: 20px;
 	padding: 0 2rem !important; 
 }
+
+.hidden {
+	height: 0px;
+	width: 0px;
+	overflow: hidden;
+}

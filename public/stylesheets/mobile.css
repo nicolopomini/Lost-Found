@@ -5,11 +5,10 @@
 }
 
 #mobile-container {
-	position:fixed;
+	position:absolute;
 	bottom:0px;
 	width: 100vw;
-	background-color:blue;
-	transition:all 1s;
+	background-color:white;
 }
 
 .btn-larger {
@@ -40,6 +39,67 @@ i.med {
 	visibility: hidden;
 }
 
-#full-wrapper {
-	transition: all 1s;
+.mobile-opened {
+	animation: openUp 1s;
+	height: 80vh;
 }
+
+@keyframes openUp {
+  0% { height: 0px; }
+  100% { height: 80vh; }
+}
+
+.mobilecontainer {
+	height: 100%;
+	position: absolute;
+	overflow: hidden;
+}
+
+#mobile-container {
+	overflow: hidden;
+}
+
+#mobile-lost {
+	left: 0px;
+	background-color:white;
+}
+
+#mobile-found {
+	right: 0px;
+	background-color:white;
+}
+
+.mobilecontainer-opened {
+	z-index: 100;
+	animation: containerOpen 1s;
+	width: 100%;
+}
+
+.mobilecontainer-closed {
+	z-index: 20;
+	animation: containerOpen 1s reverse;
+}
+
+@keyframes containerOpen {
+	0% {width: 0px;}
+	100% {width: 100%;}
+}
+
+.mywrapper {
+	position: relative;
+	width: auto;
+	height: auto;
+}
+
+.myformmobile {
+	overflow: hidden;
+	position: relative;
+	margin: 0 auto;
+	margin-top: 70px;
+	width: 90%;
+
+	height: auto;
+	transition: all 1s;
+	overflow-y: scroll;
+}
+
