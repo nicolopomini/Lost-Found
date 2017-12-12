@@ -1,4 +1,4 @@
-extends layout
+When did you find it?extends layout
 
 block content
 	div.fixed-action-btn.userbutton#loginbutton
@@ -58,13 +58,13 @@ block content
 										option(value="B105") B105
 										option(value="B106") B106
 										option(value="B107") B107
-								label Aula
+								label Room
 							div.input-field.col.s6
 								input.datepicker(type="text",name="time")#lost-time
-								label Data di smarrimento
+								label When did you lose it?
 							div.input-field.col.s8
 								input(type="text",name="description")#lost-description
-								label Descrizione
+								label Description
 							div.col.s4.submitter.center-align
 								button.btn.wawes-effect.waves-light.centered-button(type="button",onclick="formHandler(this, 'search')") search
 									i.material-icons.right search
@@ -125,13 +125,13 @@ block content
 										option(value="B105") B105
 										option(value="B106") B106
 										option(value="B107") B107
-								label Aula
+								label Room
 							div.input-field.col.s6
 								input.datepicker(type="text",name="time")#found-time
-								label Data di ritrovamento
+								label When did you find it?
 							div.input-field.col.s12
 								textarea.materialize-textarea(type="text",name="description")#found-description
-								label Descrizione
+								label Description
 							div.col.s12.center-align
 								button.btn.wawes-effect.waves-light(type="button",onclick="formHandler(this, 'found')" ) submit
 									i.material-icons.right send
@@ -189,13 +189,13 @@ block content
 										option(value="B105") B105
 										option(value="B106") B106
 										option(value="B107") B107
-								label Aula
+								label Room
 							div.input-field.col.s12
 								input.datepicker(type="text",name="time")#lost-time
-								label Data di smarrimento
+								label When did you lose it?
 							div.input-field.col.s12
 								input(type="text",name="description")#lost-description
-								label Descrizione
+								label Description
 							div.col.s12.submitter.center-align
 								button.btn.wawes-effect.waves-light.centered-button(type="button",onclick="formHandler(this, 'search')") search
 									i.material-icons.right search
@@ -252,13 +252,13 @@ block content
 									option(value="B105") B105
 									option(value="B106") B106
 									option(value="B107") B107
-							label Aula
+							label Room
 						div.input-field.col.s12
 							input.datepicker(type="text",name="time")#found-time
 							label Data di ritrovamento
 						div.input-field.col.s12
 							textarea.materialize-textarea(type="text",name="description")#found-description
-							label Descrizione
+							label Description
 						div.col.s12.center-align
 							button.btn.wawes-effect.waves-light(type="button",onclick="formHandler(this, 'found')" ) submit
 								i.material-icons.right send

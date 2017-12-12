@@ -1,8 +1,10 @@
 function emptyForm($form) {
 	$form.find('input').each(function(i){
 		console.log($(this));
-		$(this).val('')
+		$(this).val('');
 	});
+	//updating text fields using materialize
+	//Materialize.updateTextFields();
 }
 
 //handles server request
@@ -31,7 +33,8 @@ function formHandler(ref, api) {
 	}));
 
 	//retrieving form params
-	var params = $this.closest('form').serializeArray();
+	var $form = $this.closest('form');
+	var params = $form.serializeArray();
 	//checking errors
 	var error = '';
 	if(params[0].value == '') {	//not logged
@@ -64,8 +67,8 @@ function formHandler(ref, api) {
 					.done(function(res) {
 						if(!res.error) {
 							//refresh the form
-							emptyForm($this);
-							if  (api == 'search')  {	
+							emptyForm($form);
+							if  (api == 'search')  {
 								if (res.issues.length == 0) {
 									$content.addClass('col s6 offset-s3');
 									$content.html('<ul class="collection with-header"><li class="red white-text collection-header center-align"><div><i class="large material-icons">close</i></div></li><li class="collection-item"><h3 class="center-align">Oh no!</h3>Actually it seems that nobody found your properties!<br>But don\'t worry, we saved your research, and who finds your properties will be noticed to contact you.</li></ul>');
@@ -85,7 +88,7 @@ function formHandler(ref, api) {
 								}
 							}
 							else {
-							 	
+
 								if (res.issues.length == 0) {
 									$content.addClass('col s6 offset-s3');
 									$content.html('<ul class="collection with-header"><li class="green white-text collection-header center-align"><div><i class="large material-icons">check</i></div></li><li class="collection-item"><h3 class="center-align">Thank you!</h3>Actually it seems that the owner didn\'t noticed the disappearance! We saved your finding and the owner will be able to contact you.</li></ul>');
@@ -111,7 +114,7 @@ function formHandler(ref, api) {
 				$content.html('<ul class="collection with-header"><li class="red white-text collection-header center-align"><div><i class="large material-icons">close</i></div></li><li class="collection-item"><h3 class="center-align">Oh no!</h3>During the insertion of your issue we got some problems. Try to be as precise as possible with your description and retry.</li></ul>');
 			}
 			$place.html($content);
-			
+
 		});
-	
+
 }

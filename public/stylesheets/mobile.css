@@ -91,6 +91,7 @@ i.med {
 	position: relative;
 	width: auto;
 	height: auto;
+
 }
 
 .myformmobile {
@@ -106,3 +107,25 @@ i.med {
 	overflow-y: scroll;
 }
 
+/*
+.myformmobile .mywrapper {
+	margin-top: 50px;
+}
+#lost-form input,
+#lost-form label {
+	font-size: 32px;
+}
+#lost-form input,
+#lost-form .select-wrapper {
+	height: 48px;
+}
+#lost-form label {
+	line-height: 32px;
+}
+#lost-form label.active {
+	top: -14px;
+}
+#lost-form .select-wrapper ~ label {
+	top: -48px;
+}
+*/
