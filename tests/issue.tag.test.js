@@ -1,6 +1,5 @@
-var jest = require('jest'); //requiring jest for test
-var Issue = require('../models/issue.js');
-var Tag = require('../models/tag.js');
+var Issue = require('../models/issue');
+var Tag = require('../models/issue.tag');
 
 //new issue to be tested
 var issue = new Issue({

@@ -5,89 +5,149 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 
 //db-like schema constructors
-var Tag = require('../models/tag.js');
 var User = require('../models/user.js');
 var Issue = require('../models/issue.js');
 
-//SEARCHING FOR AN ITEM (USING DESCRIPTION)
-//search for matching issue by tag comparison
-router.get('/', function(req, res) {
-  //DEBUG
-  console.log('Search by DESCRIPTION');
+var matching = require('../models/issue.matching');
 
-  //new issue from get parameters
-  var issue = new Issue(req.query);
-  //TODO issue type = 'search'
-  console.log('New issue:');
-  console.log(issue);
-
-  //DEBUG
-  res.send('OK');
+//Matching the given issue with all the other issues
+//return: issues in json
+router.get('/:issueid', function(req, res) {
+  handleRequest(req, res, 'match');
 });
 
-//SEARCHING FOR AN ITEM (USING ID)
-router.get('/:id', function(req, res) {
-  var id = req.params.id;
-
-  /*
-  //DEBUG
-  var debug = 'Search by ID (= ' + id + ')';
-  console.log(debug);
-  res.send(debug);
-  */
-
-  //searching for a specific item
-  Issue.find({}, function(err, issues) {
-    //handling db errors
-    if(err) handleError(err);
-    //works!
-    console.log('Found:');
-    console.log(issues);
-    res.send(issues);
-  });
-
+//Inserting an issue of a searched object
+//return: object id
+router.post('/search', function(req, res) {
+  handleRequest(req, res, 'searching');
 });
 
-//FOUND ITEM
-//new issue from post parameters
-router.post('/', function(req, res) {
-  //DEBUG
-  console.log('Inserting FOUND');
+//Inserting an issue of a found object
+//return: object id
+router.post('/found', function(req, res) {
+  handleRequest(req, res, 'found');
+});
 
-  //creating an Issue istance from POST parameters
+//takes in the issue request and the issue's type
+//elaborates the issue trough watson
+//inserts the issue
+function insertIssue(req, res, type, user) {
   var issue = new Issue(req.body);
-  //TODO issue type = 'found'
-  console.log('New issue:');
-  console.log(issue);
+  /*
+  issue.description = req.body.descrizione;
+  issue.room = req.body.aula;
+  issue.time = req.body.data;
+  */
+  issue.author = user._id;
+  issue.type = type;
 
-  handleIssue(issue);
-});
+  //setting up the response headers
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
 
-//handling issue search
-function handleIssue(issue) {
-  //issue attributes are not valid => no response
-  if(!issue.validAttr()) return;
+  //validating created issues
+  var valid = (!issue.validateSync());
 
-  //generating tags inside the issue class
-  issue.generateTags();
-
-  //saving the issue into the db
-  issue.save(function(err) {
-    //handling db errors
-    if (err) return handleError(err);
-    //saved!
-    console.log('Saved:');
-    console.log(issue);
-  }).then(function(){ //then() is used to assure that the new issue has been inserted
-    //searching for matching TagSchema
-    //search for issues with matching tags
-    Issue.find({}, function(err, res) {
-      //handling db errors
-      if(err) handleError(err);
-      //works!
-      console.log('Searching:');
-      console.log(res);
+  //checking if parameters are valid
+  if(valid) {
+    //calling ibm watson for nlp elaboration
+    issue.watson((wErr, wRes) => {
+      //no error thrown by watson: parsing tags
+      if(wErr == null) {
+        //adding tags to issue
+        issue.addTags(wRes.keywords);
+        issue.sortTags();
+        issue.save((err) => {
+          if(err) {
+            handleError(res, "Error in db inserting.");
+          }
+        });
+          var jRes = {};
+          jRes.error = false;
+          jRes.issue = issue._id;
+          res.json(jRes);
+      }
+      //watson's error
+      else {
+        handleError(res, "I don't undestand clearly, can you please be more precise?");
+      }
     });
+  } else {
+      handleError(res, "Issue not valid.");
+  }
+}
+
+function matchIssue(req, res) {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  var id = req.params.issueid;
+  if(!id) {
+    handleError(res, "Issue id required");
+    return;
+  }
+  Issue.findById(id, (err, issue) => {
+    if(err) {
+      handleError(res, "Error with db");
+      return;
+    }
+    if(!issue) {
+      handleError(res, "This issue does not exist.");
+      return;
+    }
+    var limit = new Date(); //today
+    limit.setDate(limit.getDate() - 30); //today - 30 days
+    var opposit_type = issue.type == 'searching' ? 'found' : 'searching';
+    Issue.find({
+      type: opposit_type,
+      inserted: {$gt: limit}
+    }).
+    populate('author').
+    exec ((err, issues) => {
+      //issues: array di issue del db
+      //issue: singola issue da matchare
+      if(err) {
+        handleError(res, "Error during retriving issues into mongo");
+        return;
+      }
+      var rtr = {};
+      rtr.error = false;
+      rtr.issues = matching.match(issue,issues);
+      res.json(rtr);
+    });
+  });
+}
+
+//handling errors in API functions
+function handleError(res, error) {
+  var toSend = {};
+  toSend.error = error;
+  toSend.issue = null;
+  res.json(toSend);
+}
+//type: 'match', 'searching', 'found'
+function handleRequest(req, res, type) {
+  var token = null;
+  if(type == 'match') //richiesta get
+    token = req.query.token;
+  else
+    token = req.body.token;
+  if(!token) {
+    handleError(res, "User token is required");
+    return;
+  }
+  User.findById(token, (err, user) => {
+    if(err)
+      handleError(res, "Error with db");
+    else if(user) {
+      if(type == 'match')
+        matchIssue(req, res);
+      else if(type == 'searching')
+        insertIssue(req, res, 'searching', user);
+      else
+        insertIssue(req, res, 'found', user);
+    }
+    else
+      handleError("User not valid");
   });
 }
 

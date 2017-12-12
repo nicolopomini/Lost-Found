@@ -1,27 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user.js');
+const User = require('./user');
+const Tag = require('./issue.tag');
+const config = require('../config/config.js');
 
 var IssueSchema = new Schema({
   //document property: SchemaType
   time: {type: Date, default: null}, //when did I find it?
-  inserted: {type: Date, default: Date.now()}, //when di I inserted this issue?
+  inserted: {type: Date, default: Date.now(), required: true}, //when di I inserted this issue?
   room: {type: String, default: ''}, //where did i found it?
-  description: {type: String, minlength: 1}, //what
-  author: {type: mongoose.Schema.Types.ObjectId,  ref: 'User'}, //who
+  description: {type: String, required: true}, //what
+  author: {type: mongoose.Schema.Types.ObjectId,  ref: 'User', required: true}, //who
   photo: {type: String, default: null},
   tags: [{
     original: {type: String, minlength: 1}, //original string retrieved from IBM Watson
     parsed: {type: String, minlength: 1}, //original, but lower-case without spaces
     relevance: {type: Number, min: 0, max: 1} //relevance is a double between 0 and 1
   }],
-  type: {type: String, enum: ['searching','found']} //searching or found?
+  type: {type: String, enum: ['searching','found'], required: true} //searching or found?
 });
-
-//function to sort tags
-IssueSchema.methods.sortTags = function(t1,t2) {
-	return t1.parsed.localeCompare(t2.parsed);
-}
 
 //using IBM watson to evaluate the sentence
 IssueSchema.methods.watson = function(next) {
@@ -31,11 +28,7 @@ IssueSchema.methods.watson = function(next) {
   var NaturalLanguageProcessor = require('watson-developer-cloud/natural-language-understanding/v1.js');
 
   //setting up the connection to Watson API
-  var nlp = new NaturalLanguageProcessor({
-    'username': '080d9d59-c184-4cde-8361-8a9deb04e2a1',
-    'password': 'b0JW03HO1qYW',
-    'version_date': '2017-02-27'
-  });
+  var nlp = new NaturalLanguageProcessor(config.get('WATSON_OPTIONS'));
 
   //defining object params
   var params = {
@@ -48,13 +41,6 @@ IssueSchema.methods.watson = function(next) {
       }
     }
   }
-
-  /*
-  //DEBUG
-  console.log('Parameters to be sent:')
-  console.log(params);
-  */
-
   //executing analisys through Watson Natural Language Processor
   nlp.analyze(params, next);
 }

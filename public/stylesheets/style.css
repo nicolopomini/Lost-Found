@@ -1,8 +1,106 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	position: relative;
+	display: flex;
+	width: 100vw;
+    margin: 0;
+    padding: 0;
 }
 
-a {
-  color: #00B7FF;
+#full-wrapper {
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+    padding: 0;
+    position: relative;
+	display: flex;
+}
+
+.dropdown-content {
+	max-height: 250px !important; 
+	overflow-y: auto;
+}
+
+.container {
+	width: 49.8%;
+	display: inline-block;
+	background-color: #FFF;
+} 
+
+#line {
+	width: 0.4%;
+	display: inline-block;
+	background-color: black;	
+}
+
+#and {
+	font-family: 'Quicksand', sans-serif;
+	position: relative;
+	width: 100px;
+
+	margin: 110px 0;
+	text-align: center;
+	font-size: 9em;
+} 
+
+#lost {
+	transition: all 1s;
+	background-color:#2ECC40;
+}
+
+#found {
+	transition: all 1s;
+	background-color:#FFDC00;
+}
+
+.text-holder {
+	padding:18px 7%;
+	font-size: 8em;
+
+	color:#FFF;
+	margin: 100px 0 50px 0;
+	font-family: 'Abril Fatface', cursive;
+	font-weight: 600;
+}
+
+#h1lost {
+	direction: rtl;
+	transition: all 1s;
+}
+
+#h1found {
+	direction: ltr;
+	transition: all 1s;
+}
+
+.myform {
+	overflow: hidden;
+	position: relative;
+	margin: 0 auto;
+	width: 70%;
+
+	height: 0px;
+	
+	transition: all 1s;
+	transition-delay: 1s;
+	overflow-y: scroll;
+}
+
+i.med {
+	font-size:2.5rem;
+}
+
+.userbutton {
+	top: 10px;
+	bottom: auto;
+}
+
+.submitter {
+	margin-top: 20px;
+	padding: 0 2rem !important; 
+}
+
+.hidden {
+	height: 0px;
+	width: 0px;
+	overflow: hidden;
 }

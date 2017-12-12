@@ -1,5 +1,4 @@
-var jest = require('jest'); //requiring jest for test
-var Issue = require('../models/issue.js');
+var Issue = require('../models/issue');
 
 var issue = new Issue({
   description: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover.",
