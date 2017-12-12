@@ -1,7 +1,1 @@
 .DS_Store
-
-#ignores node_modules upload, use 'npm install' instead
-node_modules/
-
-#ignores config
-config/
