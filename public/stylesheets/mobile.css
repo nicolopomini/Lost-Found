@@ -57,6 +57,7 @@ i.med {
 
 #mobile-container {
 	overflow: hidden;
+	visibility: hidden;
 }
 
 #mobile-lost {
@@ -70,6 +71,7 @@ i.med {
 }
 
 .mobilecontainer-opened {
+	visibility: visible;
 	z-index: 100;
 	animation: containerOpen 1s;
 	width: 100%;
@@ -99,6 +101,7 @@ i.med {
 	width: 90%;
 
 	height: auto;
+	max-height: 75vh;
 	transition: all 1s;
 	overflow-y: scroll;
 }
