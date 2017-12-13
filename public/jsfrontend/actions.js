@@ -1,5 +1,5 @@
 function emptyForm($form) {
-	$form.find('input:not([name="toke"])').each(function(i){
+	$form.find('input:not([name="token"])').each(function(i){
 		console.log($(this));
 		$(this).val('');
 	});
