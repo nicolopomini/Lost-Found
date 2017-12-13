@@ -7,27 +7,17 @@ const app = require('../app.js');
 //requiring Issue schema
 const Issue = require('../models/issue.js');
 
+var tmp;
+
 const without_token = {
-  descrizione: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
+  description: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
 };
 
 const with_token = {
   token: '5a280a822724c45be22aeedb',
-  descrizione: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
+  description: "I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover"
 };
 
-const issue_without_token = {
-  issueid: ""//TODO
-};
-
-const wrong_issue_without_token = {
-  issueid: ""//TODO
-};
-
-const issue_with_token = {
-  token: '5a280a822724c45be22aeedb',
-  issueid: ""//TODO
-};
 
 //------ TEST API segnalare un oggetto smarrito ------
 
@@ -60,9 +50,8 @@ test('chiamata POST alle API per segnalare un oggetto smarrito. Con parametri e 
     .then((res) => {
       expect(res.statusCode).toBe(200);
       expect(res.body.error).toBe(false);
-      console.log('ISSUE risultato: ');
       console.log(res.body.issue);
-      expect(res.body.issue).toBe('5a280a822724c45be22aeedb');
+      tmp=res.body.issue;
     });
 });
 
@@ -99,89 +88,19 @@ test('chiamata POST alle API per segnalare un oggetto trovato. Con parametri e t
     .then((res) => {
       expect(res.statusCode).toBe(200);
       expect(res.body.error).toBe(false);
-      expect(res.body.issue).toBe('5a280a822724c45be22aeedb');
+      console.log(res.body.issue);
     });
 });
 
 
 //------ TEST API ricerca oggetto ------
 
-test('Chiamata GET alle API per cercare un oggetto. Senza issueid e senza token, dovrebbe dare errore', () => {
-  //testing API, the promise way
-  return request(app)
-    //request through POST method
-    .get('/issues/')
-    //expecting results
-    .then((res) => {
-      expect(res.statusCode).toBe(200);
-      expect(res.body.error).not.toBe(false);
-      expect(res.body.issue).toBe(null);
-    });
-});
-
-test('Chiamata GET alle API per cercare un oggetto. Con issueid sbagliato e senza token, dovrebbe dare errore', () => {
-  //testing API, the promise way
-  return request(app)
-    //request through POST method
-    .get('/issues/')
-    .send(wrong_issue_without_token)
-    .then((res) => {
-      expect(res.statusCode).toBe(200);
-      expect(res.body.error).not.toBe(false);
-      expect(res.body.issue).toBe(null);
-    });
-});
-
-test('Chiamata GET alle API per cercare un oggetto. Con issueid giusto e senza token, dovrebbe dare errore', () => {
-  //testing API, the promise way
-  return request(app)
-    //request through POST method
-    .get('/issues/')
-    .send(issue_without_token)
-    .then((res) => {
-      expect(res.statusCode).toBe(200);
-      expect(res.body.error).not.toBe(false);
-      expect(res.body.issue).toBe(null);
-    });
-});
-
 test('Chiamata GET alle API per cercare un oggetto. Con issueid giusto e con token, dovrebbe restituire l\'issue', () => {
   return request(app)
-    .get('/issues/')
-    .send(issue_with_token)
+    .get('/issues/'+tmp+'?token=5a280a822724c45be22aeedb')
     .then((res) => {
       expect(res.statusCode).toBe(200);
       expect(res.body.error).toBe(false);
-      //expect(res.body.issue).toBe('5a280a822724c45be22aeedb');
+      console.log(res.body.issues);
     });
 });
-
-/*
-var http = require("http");
-var options = {
-  hostname: 'localhost',
-  port: 3000,
-  path: '/issues/found',
-  method: 'POST',
-  headers: {
-      'token': token,
-      'descrizione': 'I lost my laptop in room B106 yesterday. It is an HP computer, is grey and has a blue cover.'
-  }
-};
-var req = http.request(options, function(res) {
-  console.log('Status: ' + res.statusCode);
-  console.log('Headers: ' + JSON.stringify(res.headers));
-  res.setEncoding('utf8');
-  res.on('data', function (body) {
-    console.log('Body: ' + body);
-  });
-});
-req.on('error', function(e) {
-  console.log('problem with request: ' + e.message);
-});
-// write data to request body
-req.write('{"string": "Hello, World"}');
-req.end();
-
-
-*/
