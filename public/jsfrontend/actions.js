@@ -1,7 +1,9 @@
 function emptyForm($form) {
 	$form.find('input').each(function(i){
 		console.log($(this));
-		$(this).val('');
+		if ($(this).name != 'token') {
+			$(this).val('');
+		}
 	});
 	//updating text fields using materialize
 	//Materialize.updateTextFields();
@@ -73,7 +75,7 @@ function formHandler(ref, api) {
 									$content.addClass('col s6 offset-s3');
 									$content.html('<ul class="collection with-header"><li class="red white-text collection-header center-align"><div><i class="large material-icons">close</i></div></li><li class="collection-item"><h3 class="center-align">Oh no!</h3>Actually it seems that nobody found your properties!<br>But don\'t worry, we saved your research, and who finds your properties will be noticed to contact you.</li></ul>');
 								} else {
-									$content.addClass('col s10 offset-s1 center-align');
+									$content.addClass('col s10 offset-s1');
 									$content.html('<h5>Here is what people found, that might be yours</h5>');
 									var $cardWrapper = $('<div/>', {
 										class: 'col s10 offset-s1'
