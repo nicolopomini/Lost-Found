@@ -1,9 +1,7 @@
 function emptyForm($form) {
-	$form.find('input').each(function(i){
+	$form.find('input:not([name="token"])').each(function(i){
 		console.log($(this));
-		if ($(this).name != 'token') {
-			$(this).val('');
-		}
+		$(this).val('');
 	});
 	//updating text fields using materialize
 	//Materialize.updateTextFields();
