@@ -1,10 +1,10 @@
 {
   "MONGO_OPTIONS": {
     "useMongoClient": true,
-    "user": "se2",
-    "pass": "qwerty"
+    "user": "lostandfound",
+    "pass": "ieTAldgTQlfzRq3y"
   },
-  "MONGO_URL": "mongodb://ds157185.mlab.com:57185/lostfound",
+  "MONGO_URL": "mongodb://lostfound.crn6e.mongodb.net/lostfound",
   "OAUTH2_CLIENT_ID": "1059098531864-877e25bb4njnojsqm3vtq2agbsej4kuh.apps.googleusercontent.com",
   "OAUTH2_CLIENT_SECRET": "mN9AD_oEIjbuAYymOubvGtEO",
   "OAUTH2_CALLBACK": "https://nicolopomini-lostfound.herokuapp.com/auth/google/callback",
